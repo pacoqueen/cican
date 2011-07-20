@@ -1,0 +1,364 @@
+# Spanish translations for cican package.
+# Copyright (C) 2011 Francisco José Rodríguez Bogado
+# This file is distributed under the same license as the cican package.
+# Francisco José Rodríguez Bogado <frbogado@novaweb.es>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cican\n"
+"Report-Msgid-Bugs-To: frbogado@novaweb.es\n"
+"POT-Creation-Date: 2011-02-15 16:06+0100\n"
+"PO-Revision-Date: 2011-02-15 16:32+0100\n"
+"Last-Translator: Francisco José Rodríguez Bogado <frbogado@novaweb.es>\n"
+"Language-Team: Español <pacoqueen@users.sourceforge.net>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../formularios/gtkexcepthook.py:155
+msgid ""
+"<big><b>A programming error has been detected during the execution of this "
+"program.</b></big>"
+msgstr ""
+"<big><b>Se ha detectado un error durante la ejecución del programa.</b></big>"
+
+#: ../formularios/menu.py:441
+msgid "Abrir: \"acerca de...\""
+msgstr "Abrir: \"acerca de...\""
+
+#: ../formularios/menu.py:586
+msgid "Algunas partes del código por:"
+msgstr "Algunas partes del código por:"
+
+#: ../formularios/menu.py:231
+msgid "Analizando permisos (1/2)..."
+msgstr "Analizando permisos (1/2)..."
+
+#: ../formularios/menu.py:238
+msgid "Analizando permisos (1/2)... ({0:d}/{1:d})"
+msgstr "Analizando permisos (1/2)... ({0:d}/{1:d})"
+
+#: ../formularios/menu.py:245
+msgid "Analizando permisos (2/2)..."
+msgstr "Analizando permisos (2/2)..."
+
+#: ../formularios/menu.py:249
+msgid "Analizando permisos (2/2)... ({0:d}/{1:d})"
+msgstr "Analizando permisos (2/2)... ({0:d}/{1:d})"
+
+#: ../formularios/menu.py:660
+msgid "Archivos de traza-depuración texto plano ginn"
+msgstr "Archivos de traza-depuración texto plano ginn"
+
+#: ../formularios/ventana_generica.py:490
+#, python-format
+msgid "BUSCAR %s"
+msgstr "BUSCAR %s"
+
+#: ../formularios/gtkexcepthook.py:252
+msgid "Bug Details"
+msgstr "Detalles del <i>bug</i>"
+
+#: ../formularios/gtkexcepthook.py:151
+msgid "Bug Detected"
+msgstr "<i>Bug</i> detectado"
+
+#: ../formularios/menu.py:188
+msgid "CICAN - Menú principal"
+msgstr "CICAN - Menú principal"
+
+#: ../formularios/gtkexcepthook.py:196
+msgid "CICAN support"
+msgstr "Soporte técnico de CICAN"
+
+#: ../formularios/menu.py:618
+msgid "CONTRASEÑA"
+msgstr "CONTRASEÑA"
+
+#: ../formularios/gtkexcepthook.py:212 ../formularios/gtkexcepthook.py:220
+msgid "CONTRASEÑA:"
+msgstr "CONTRASEÑA:"
+
+#: ../formularios/menu.py:636
+msgid "CORREO ENVIADO"
+msgstr "CORREO ENVIADO"
+
+#: ../formularios/menu.py:116
+msgid "Cargando gestor de mensajes..."
+msgstr "Cargando gestor de mensajes..."
+
+#: ../formularios/menu.py:136
+msgid "Cargando menú principal..."
+msgstr "Cargando menú principal..."
+
+#: ../formularios/menu.py:453
+#, python-format
+msgid "Cargar: %s.py"
+msgstr "Cargar: %s.py"
+
+#: ../formularios/gtkexcepthook.py:181
+msgid "Close all"
+msgstr "Cerrar todo"
+
+#: ../utils/ui.py:309
+msgid "Copiar al portapapeles"
+msgstr "Copiar al portapapeles"
+
+#: ../formularios/menu.py:727
+msgid "Cuenta: "
+msgstr "Cuenta: "
+
+#: ../formularios/ventana_generica.py:98
+msgid "Debe pasar al menos la clase o un objeto."
+msgstr "Debe pasar al menos la clase o un objeto."
+
+#: ../formularios/gtkexcepthook.py:178
+msgid "Details..."
+msgstr "Detalles"
+
+#: ../formularios/menu.py:748
+msgid "ENVIAR INFORME DE ERROR"
+msgstr "ENVIAR INFORME DE ERROR"
+
+#: ../formularios/menu.py:632
+msgid "ERROR GINN. Capturada excepción no contemplada."
+msgstr "ERROR GINN. Capturada excepción no contemplada."
+
+#: ../formularios/menu.py:627
+#, python-format
+msgid "Enviando correo desde %s..."
+msgstr "Enviando correo desde %s..."
+
+#: ../formularios/menu.py:737
+msgid "Error capturado: "
+msgstr "Error capturado: "
+
+#: ../formularios/menu.py:485
+msgid "Error detectado. Iniciando informe por correo."
+msgstr "Error detectado. Iniciando informe por correo."
+
+#: ../formularios/ventana_generica.py:193
+msgid "Error en VentanaGenerica activando widgets."
+msgstr "Error en VentanaGenerica activando widgets."
+
+#: ../formularios/menu.py:843
+#, python-format
+msgid ""
+"Errores en segundo plano. La stderr contiene:\n"
+"%s"
+msgstr ""
+"Errores en segundo plano. La stderr contiene:\n"
+"%s"
+
+#: ../formularios/menu.py:271 ../formularios/menu.py:308
+#: ../formularios/menu.py:312 ../formularios/menu.py:320
+msgid "Favoritos"
+msgstr "Favoritos"
+
+#: ../formularios/menu.py:641
+msgid "GUARDAR TRAZA/DEBUG"
+msgstr "GUARDAR TRAZA/DEBUG"
+
+#: ../formularios/menu.py:600
+msgid "Iconos gartoon por"
+msgstr "Iconos gartoon por"
+
+#: ../formularios/menu.py:637
+msgid "Informe de error enviado por correo electrónico."
+msgstr "Informe de error enviado por correo electrónico."
+
+#: ../formularios/gtkexcepthook.py:210 ../formularios/gtkexcepthook.py:218
+#, python-format
+msgid "Introduzca contraseña del servidor de correo %s"
+msgstr "Introduzca contraseña del servidor de correo %s"
+
+#: ../formularios/ventana_generica.py:491
+msgid "Introduzca el texto a buscar:"
+msgstr "Introduzca el texto a buscar:"
+
+#: ../formularios/gtkexcepthook.py:157
+msgid ""
+"It probably isn't fatal, but should be reported to the developers "
+"nonetheless."
+msgstr ""
+"Probablemente no sea grave, pero debería ser enviado a los desarrolladores."
+
+#: ../formularios/menu.py:692
+#, python-format
+msgid ""
+"La información de depuración se ha guardado correctamente en %s.\n"
+"Cierre la ventana y reinicie el programa completo."
+msgstr ""
+"La información de depuración se ha guardado correctamente en %s.\n"
+"Cierre la ventana y reinicie el programa completo."
+
+#: ../formularios/menu.py:519
+msgid "Lanzando..."
+msgstr "Lanzando..."
+
+#: ../formularios/menu.py:533
+#, python-format
+msgid "Línea %s\n"
+msgstr "Línea %s\n"
+
+#: ../formularios/menu.py:139
+msgid "Menú iniciado"
+msgstr "Menú iniciado"
+
+#: ../formularios/menu.py:696
+msgid "NO TIENE PERMISO"
+msgstr "NO TIENE PERMISO"
+
+#: ../formularios/menu.py:697
+msgid "No tiene permiso para guardar el archivo. Pruebe en otro directorio."
+msgstr "No tiene permiso para guardar el archivo. Pruebe en otro directorio."
+
+#: ../formularios/menu.py:628
+msgid "OBSERVACIONES: "
+msgstr "OBSERVACIONES: "
+
+#: ../formularios/menu.py:733
+msgid "Observaciones: "
+msgstr "Observaciones: "
+
+#: ../formularios/menu.py:856
+msgid "Optimizaciones no disponibles."
+msgstr "Optimizaciones no disponibles."
+
+#: ../formularios/menu.py:566
+msgid "PLATAFORMA NO SOPORTADA"
+msgstr "PLATAFORMA NO SOPORTADA"
+
+#: ../formularios/menu.py:447
+msgid "Pruebas de coherencia de datos"
+msgstr "Pruebas de coherencia de datos"
+
+#: ../formularios/menu.py:567
+msgid ""
+"Pruebas de coherencia solo funcionan en arquitecturas con plataformas POSIX "
+"o NT\n"
+"(GNU/Linux, MS-Windows, *BSD...)."
+msgstr ""
+"Pruebas de coherencia solo funcionan en arquitecturas con plataformas POSIX "
+"o NT\n"
+"(GNU/Linux, MS-Windows, *BSD...)."
+
+#: ../formularios/menu.py:709
+msgid ""
+"REMITENTE: {0:s}\n"
+"\n"
+"OBSERVACIONES: {1:s}\n"
+"\n"
+"TEXTO: \n"
+"{2:s}\n"
+msgstr ""
+"REMITENTE: {0:s}\n"
+"\n"
+"OBSERVACIONES: {1:s}\n"
+"\n"
+"TEXTO: \n"
+"{2:s}\n"
+
+#: ../formularios/gtkexcepthook.py:174
+msgid "Report..."
+msgstr "Enviar informe..."
+
+#: ../formularios/menu.py:542
+msgid "SALIDA CHECKLIST WINDOW"
+msgstr "SALIDA CHECKLIST WINDOW"
+
+#: ../formularios/menu.py:163 ../formularios/menu.py:175
+msgid "SALIR"
+msgstr "SALIR"
+
+#: ../formularios/ventana_generica.py:502
+#, python-format
+msgid "SELECCIONE %s"
+msgstr "SELECCIONE %s"
+
+#: ../formularios/menu.py:528
+msgid "Se ha detectado un error"
+msgstr "Se ha detectado un error"
+
+#: ../formularios/menu.py:841
+msgid "Se han detectado algunos errores en segundo plano durante la ejecución."
+msgstr ""
+"Se han detectado algunos errores en segundo plano durante la ejecución."
+
+#: ../formularios/menu.py:722
+msgid ""
+"Se produjo un error mientras usaba la aplicación\n"
+"Es recomendable enviar un informe a los desarrolladores.\n"
+"Debe contar con una cuenta de correo electrónico para poder hacerlo."
+msgstr ""
+"Se produjo un error mientras usaba la aplicación\n"
+"Es recomendable enviar un informe a los desarrolladores.\n"
+"Debe contar con una cuenta de correo electrónico para poder hacerlo."
+
+#: ../formularios/menu.py:705
+msgid ""
+"Si no puede enviar el informe de error o no tiene conexión a Internet\n"
+"puede guardar la información en un fichero de texto para que sea revisada "
+"más tarde.\n"
+"\n"
+"¿Quiere guardar la traza de depuración en disco ahora?"
+msgstr ""
+"Si no puede enviar el informe de error o no tiene conexión a Internet\n"
+"puede guardar la información en un fichero de texto para que sea revisada "
+"más tarde.\n"
+"\n"
+"¿Quiere guardar la traza de depuración en disco ahora?"
+
+#: ../formularios/menu.py:583
+msgid ""
+"Software de gestión del Centro de Investigadión de Carreteras de ANdalucía"
+msgstr ""
+"Software de gestión del Centro de Investigadión de Carreteras de ANdalucía"
+
+#: ../formularios/menu.py:691
+msgid "TRAZA GUARDADA"
+msgstr "TRAZA GUARDADA"
+
+#: ../formularios/menu.py:667
+msgid "Todos"
+msgstr "Todos"
+
+#: ../formularios/menu.py:810
+msgid "Usa una configuración alternativa almacenada en FICHERO"
+msgstr "Usa una configuración alternativa almacenada en FICHERO"
+
+#: ../formularios/menu.py:326 ../formularios/menu.py:340
+msgid "Ventanas más usadas"
+msgstr "Ventanas más usadas"
+
+#: ../formularios/menu.py:654
+msgid "WARNING: No se pudo obtener el «home» del usuario"
+msgstr "Ventanas más usadas"
+
+#: ../formularios/menu.py:806
+msgid "uso: %prog [opciones] usuario contraseña"
+msgstr "uso: %prog [opciones] usuario contraseña"
+
+#: ../formularios/menu.py:480
+#, python-format
+msgid "¡El lanzador bloqueante de Nobita! (%s)"
+msgstr "¡El lanzador bloqueante de Nobita! (%s)"
+
+#: ../formularios/menu.py:474
+#, python-format
+msgid "¡El lanzador multiproceso de Doraemon! (%s)"
+msgstr "¡El lanzador multiproceso de Doraemon! (%s)"
+
+#: ../formularios/menu.py:162 ../formularios/menu.py:174
+msgid "¿Desea cerrar el menú principal?"
+msgstr "¿Desea cerrar el menú principal?"
+
+#: ../formularios/menu.py:520
+msgid "¿Existe?"
+msgstr "¿Existe?"
+
+#: ../formularios/menu.py:704
+msgid "¿GUARDAR A DISCO?"
+msgstr "¿GUARDAR A DISCO?"

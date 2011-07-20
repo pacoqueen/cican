@@ -1,0 +1,6 @@
+style 'blanco_y_negro' { bg[NORMAL] = '#F5FBEF'
+                         fg[NORMAL] = '#000000' 
+                         base[NORMAL] = '#FFFFFF' 
+                         text[NORMAL] = '#000000' 
+                       }
+class '*' style 'blanco_y_negro'

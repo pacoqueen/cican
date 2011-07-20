@@ -1,0 +1,33 @@
+-- cruiz@cican.net Concepción Ruiz Marín   Usuario 
+-- copias@cican.net    copias  Usuario 
+-- famuedo@cican.net   Francisco Amuedo Monge  Usuario 
+-- iperez@cican.net    Inmacula Perez Ruiz Usuario 
+-- jgalan@cican.net    Joaquín Galán Márquez   Usuario 
+-- jcgarcia@cican.net  Juan Carlos García Caro Usuario 
+-- jfigueroa@cican.net Juan Miguel Figueroa Yañez  Usuario 
+-- mruiz@cican.net Mª. del Mar Ruiz Begines Usuario 
+-- mggonzalez@cican.net    Mª. Gracia González Rodríguez    Usuario 
+-- mdominguez@cican.net    Manuel Domínguez Mora   Usuario 
+-- mfernandez@cican.net    María Eugenia Fernández Mayal   Usuario 
+-- prueba@cican.net    prueba  Usuario 
+-- postgres@cican.net  Superusuario PostgreSQL Usuario 
+-- vhbenito@cican.net  Víctor Hugo Benito Villalba Usuario 
+INSERT INTO usuario VALUES(1, 
+                           NULL, 
+                           'admin', 
+                           'cee9be15784861e244ca2e58268343c8',
+                           '',
+                           '',
+                           '',
+                           0,
+                           '',
+                           '', 
+                           '', 
+                           '', 
+                           FALSE, 
+                           FALSE, 
+                           FALSE, 
+                           FALSE, 
+                           FALSE, 
+                           'Administrador de la aplicación');
+

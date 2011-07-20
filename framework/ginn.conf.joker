@@ -1,0 +1,8 @@
+tipobd	postgres
+user 	cican 
+pass	cican 
+dbname 	cican
+host	joker
+host	192.168.5.100
+modelo_presupuesto presupuesto2
+ventanas_sobre fc
