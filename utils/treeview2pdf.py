@@ -31,8 +31,10 @@ root, dirs, files = os.walk(".").next()
 if "utils" in dirs:
     sys.path.insert(0, ".")
 from utils.informes import generar_pdf, give_me_the_name_baby, abrir_pdf
+from utils.fecha import str_fecha
 from tempfile import gettempdir
 from gtk import TreeStore
+import datetime
 
 def treeview2pdf(tv, titulo = None, fecha = None, apaisado = None, 
                  pijama = False, graficos = [], numcols_a_totalizar = [], 
@@ -97,7 +99,7 @@ def treeview2pdf(tv, titulo = None, fecha = None, apaisado = None,
             extra = extra[:len(campos)]
         datos.append(extra)
     if fecha == None:
-        fecha = utils.str_fecha(mx.DateTime.localtime())
+        fecha = str_fecha(datetime.date.today())
     if apaisado != None:
         pdf_apaisado = apaisado
     nomarchivo = generar_pdf(archivo, 

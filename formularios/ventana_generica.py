@@ -32,7 +32,11 @@ Created on 20/05/2010
 
 GALACTUS = lambda *args, **kw: None
 
-import pygtk
+import pygtk, os, sys
+if (os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == 
+    os.path.dirname(os.path.abspath(__file__)).split(os.path.sep)[-1]):
+    os.chdir("..")
+sys.path.append(".")
 pygtk.require('2.0')
 import gtk, gtk.glade 
 from ventana import Ventana
@@ -42,6 +46,9 @@ from formularios.ventana_progreso import VentanaProgreso
 import datetime, os
 from gettext import gettext as _
 from gettext import bindtextdomain, textdomain
+from reports.simple import simple
+from utils.informes import abrir_pdf
+
 bindtextdomain("cican", 
     os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "l10n")))
 textdomain("cican")
@@ -123,9 +130,21 @@ class VentanaGenerica(Ventana):
                        'b_nuevo/clicked': self.nuevo, 
                        'b_borrar/clicked': self.borrar, 
                        'b_buscar/clicked': self.buscar, 
-                       'b_guardar/clicked': self.guardar
+                       'b_guardar/clicked': self.guardar, 
                       }
         self.add_connections(connections)
+        # Un par de botones opcionales que no están en todas las ventanas:
+        opts = {'b_imprimir/clicked': self.imprimir, 
+                'b_exportar/clicked': self.exportar}
+        for bs in opts:
+            botonname, signal = bs.split("/")
+            try:
+                boton = self.wids[botonname]
+            except KeyError:
+                pass    # "Lo no nay" xD
+            else:
+                funcion = opts[bs]
+                boton.connect(signal, funcion)
         self._funcs_actualizacion_extra = []    # Lista de funciones que se 
             # llamarán cuando se actualice la ventana.
         if self.objeto == None:
@@ -135,6 +154,23 @@ class VentanaGenerica(Ventana):
         if run:
             gtk.main()
 
+    def imprimir(self, boton):
+        lineas = []
+        if self.objeto != None:
+            for colname in self.clase.sqlmeta.columns:
+                col = self.clase.sqlmeta.columns[colname]
+                valor_objeto = getattr(self.objeto, col.name)
+                lineas.append("{0}: {1}".format(colname, valor_objeto))
+        texto = "\n".join(lineas)
+        filepdf = simple(texto, 
+                         titulo = self.wids['ventana'].get_title(), 
+                         basefilename = self.clase.__name__, 
+                         watermark = "PRUEBA - BORRADOR")   # TODO: Cambiar cuando haga algo más decente.
+        abrir_pdf(filepdf)
+    
+    def exportar(self, boton):
+        raise NotImplementedError
+    
     def get_usuario(self):
         return self.__usuario
 
@@ -355,6 +391,19 @@ class VentanaGenerica(Ventana):
                 valor = None
         elif isinstance(col, pclases.SOForeignKey):
             valor = utils.ui.combo_get_value(widget)
+        elif isinstance(col, (pclases.SOTimeCol, pclases.SOCol)):
+            # BUG en sqlobject identifica los TimeCol con SOCol
+            valor = widget.get_text()
+            try:
+                valor = utils.fecha.parse_hora(valor)
+            except Exception, e:
+                if pclases.DEBUG and pclases.VERBOSE:
+                    ttt = "ventana_generica::leer_valor -> Excepción %s "\
+                          "capturada al convertir «%s» a hora. "\
+                          "Devuelvo None." % (e, valor)
+                    print ttt
+                #raise e
+                valor = None
         else:
             # Lo intento como puedo. A lo mejor faltaría intentarlo también 
             # como si fuera un TextView.
@@ -469,6 +518,17 @@ class VentanaGenerica(Ventana):
             widget.set_text(valor)
         elif isinstance(col, pclases.SOForeignKey):
             utils.ui.combo_set_from_db(widget, valor)
+        elif isinstance(col, (pclases.SOTimeCol, pclases.SOCol)):
+            try:
+                valor = utils.fecha.str_hora_corta(valor)
+            except Exception, e:
+                if pclases.DEBUG and pclases.VERBOSE:
+                    txterr =  "Excepción %s capturada al convertir «%s» "\
+                              "de fecha a cadena." % (e, valor)
+                    print txterr
+                #raise e
+                valor = ""
+            widget.set_text(valor)
         else:
             # Lo intento como puedo. A lo mejor faltaría intentarlo también 
             # como si fuera un TextView.
@@ -658,7 +718,8 @@ class VentanaGenerica(Ventana):
                               "sumatorio.\n\tExcepción: %s" % (valor, te)
                         print ttt
                 # Y ahora lo pongo bonico del "to".
-                valor = humanizar(valor, registro.sqlmeta.columns[columna])
+                valor = humanizar(valor, registro.sqlmeta.columns[columna], 
+                                  force_numeric = True)
                 fila.append(valor)
             fila.append(registro.get_puid())
             model.append(None, (fila))  # Es un treeview plano que usaré como 
@@ -1450,7 +1511,8 @@ def rellenar_lista(w, clase_tablajena, orden = "id",
         datos.append((reg.id, info))
     utils.ui.rellenar_lista(w, datos)
 
-def build_widget_valor(col, nombre_campo, ventana = None, usuario = None):
+def build_widget_valor(col, nombre_campo, ventana = None, usuario = None, 
+                       let_edit = True, let_create = True):
     """
     Recibe un objeto de la familia SOCol y devuelve el 
     widget adecuado para mostrar su valor.
@@ -1459,6 +1521,10 @@ def build_widget_valor(col, nombre_campo, ventana = None, usuario = None):
     Si es una fecha: entry con un botón para mostrar el calendario.
     Si es un ForeignKey, usar un ComboBoxEntry con utils.rellenar... con las
     tuplas de la tabla referenciada.
+    @param let_edit: Añade un botón a los combos que permite editar objetos 
+                     referenciados.
+    @param let_create: Añade un botón a los combos que permite crear nuevos 
+                       objetos relacionados.
     """
     box = None  # Posible contenedor externo.
     if isinstance(col, pclases.SOStringCol): 
@@ -1508,16 +1574,23 @@ def build_widget_valor(col, nombre_campo, ventana = None, usuario = None):
         prettybox.set_name("prettybox_" + col.name)
         prettybox.pack_start(w, expand = True, fill = False)
         box.pack_start(prettybox)
-        b_nuevo_relacionado = _build_boton_nuevo_relacionado(clase_tablajena, 
-                                                             w, usuario)
-        b_editar_relacionado = _build_boton_editar_relacionado(clase_tablajena,
-                                                               w, usuario)
-        b_editar_relacionado.set_property("sensitive", 
-                                          utils.ui.combo_get_value(w))
-        w.connect("changed", lambda cb: b_editar_relacionado.set_property(
-            "sensitive", utils.ui.combo_get_value(w)))
-        box.pack_start(b_editar_relacionado, expand = False)
-        box.pack_start(b_nuevo_relacionado, expand = False)
+        if let_create:
+            b_nuevo_relacionado = _build_boton_nuevo_relacionado(
+                                        clase_tablajena, w, usuario)
+            box.pack_start(b_nuevo_relacionado, expand = False)
+        if let_edit:
+            b_editar_relacionado = _build_boton_editar_relacionado(
+                                        clase_tablajena, w, usuario)
+            b_editar_relacionado.set_property("sensitive", 
+                                              utils.ui.combo_get_value(w))
+            w.connect("changed", lambda cb: b_editar_relacionado.set_property(
+                "sensitive", utils.ui.combo_get_value(w)))
+            box.pack_start(b_editar_relacionado, expand = False)
+    elif isinstance(col, (pclases.SOTimeCol, pclases.SOCol)):
+        w = gtk.Entry()
+        w.connect("focus-out-event", actualizar_hora, None, ventana, 
+                                                      nombre_campo)
+        w.set_name(col.name)
     else:
         w = gtk.Entry()
         w.set_name(col.name)
@@ -1543,6 +1616,27 @@ def actualizar_fecha(w, event, valor_fallback = None,
     except (ValueError, TypeError):
         fecha = valor_fallback
     w.set_text(utils.fecha.str_fecha(fecha))
+
+def actualizar_hora(w, event, valor_fallback = None, 
+                    ventana = None, nombre_campo = None):
+    """
+    Intenta parsear la hora del entry y la reescribe correctamente.
+    """
+    if ventana != None and nombre_campo != None:
+        valor_fallback = getattr(ventana.objeto, nombre_campo)
+    if isinstance(valor_fallback, type("cadena")):
+        try:
+            valor_fallback = utils.fecha.parse_fecha(valor_fallback)
+        except (ValueError, TypeError):
+            valor_fallback = None
+    if valor_fallback == None:
+        valor_fallback = datetime.date.today()
+    txt = w.get_text()
+    try:
+        fecha = utils.fecha.parse_hora(txt)
+    except (ValueError, TypeError):
+        fecha = valor_fallback
+    w.set_text(utils.fecha.str_hora_corta(fecha))
 
 def _build_boton_nuevo_relacionado(clase_tablajena, combo, usuario = None):
     """
@@ -1606,15 +1700,23 @@ def _editar_relacionado(boton, clase, combo, usuario = None):
 
 def _abrir_en_ventana_nueva(tv, path, cv, usuario = None, 
                             func_actualizar_model = GALACTUS, 
-                            colname = None):
+                            colname = None, clase = None):
     model = tv.get_model()
     puid = model[path][-1]
-    objeto = pclases.getObjetoPUID(puid)
     try:
-        cargar_formulario(clase, objeto, usuario)
-    except ValueError:
-        VentanaGenerica(objeto, usuario = usuario)
-    func_actualizar_model(colname)
+        objeto = pclases.getObjetoPUID(puid)
+    except AttributeError:  # puid es None y no se le puede hacer split 
+        pass                # en pclases. Pasando de hacer nada.
+    else:
+        try:
+            if not clase:
+                # FIXME: Qué tontería. ¿Por qué no sacarla a partir del objeto?
+                # Si es que además se supone que es un parámetro opcional...
+                raise ValueError
+            cargar_formulario(clase, objeto, usuario)
+        except ValueError:
+            VentanaGenerica(objeto, usuario = usuario)
+        func_actualizar_model(colname)
 
 def get_valor_defecto(col):
     """
@@ -1628,10 +1730,13 @@ def get_valor_defecto(col):
         res = "0.0"
     elif isinstance(col, pclases.SOBoolCol):
         res = "False"
-    elif isinstance(col, pclases.SODateCol):
+    elif isinstance(col, (pclases.SODateCol, pclases.SODateTimeCol)):
         res = "datetime.date.today()"
     elif isinstance(col, pclases.SOForeignKey):
         res = "None"
+    elif isinstance(col, (pclases.SOTimeCol, pclases.SOCol)):
+        res = "datetime.time(datetime.datetime.now().hour, "\
+                            "datetime.datetime.now().minute)"
     else:
         res = "None"
     return res
@@ -1661,17 +1766,26 @@ def casar(valor, columna):
             res = None
     elif isinstance(columna, pclases.SOForeignKey):
         res = utils.numero.parse_int(valor) # El ID (entero) debería entrar.
+    elif isinstance(columna, (pclases.SOTimeCol, pclases.SOCol)):
+        if valor != "":
+            res = utils.fecha.parse_hora(valor)
+        else:
+            res = None
     else:
         txtexcp = "ventana_generica::casar -> %s no es de un tipo válido" % (
                     columna)
         raise TypeError, txtexcp
     return res
 
-def humanizar(valor, columna):
+def humanizar(valor, columna, force_numeric = False):
     """
     Devuelve el valor convertido a una cadena legible y amigable para el 
     usuario.
     «columna» se usa solo para mostrar un valor legible en las claves ajenas.
+    Si «force_numeric» es True, cuando la columna es un entero o un float, se 
+    devuelve 0 en caso de Nones. Es para evitar que en los TreeView se 
+    intenten insertar cadenas vacías en columnas numéricas y que no salte así 
+    ninguna excepción.
     """
     if isinstance(columna, pclases.SOForeignKey):
         try:
@@ -1686,7 +1800,10 @@ def humanizar(valor, columna):
     #elif isinstance(valor, float):
     #    res = utils.numero.float2str(valor, 2)
     elif res == None:
-        res = ""
+        if force_numeric: 
+            res = 0
+        else:
+            res = ""
     return res
 
 if __name__ == "__main__":

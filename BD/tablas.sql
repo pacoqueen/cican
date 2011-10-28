@@ -120,7 +120,8 @@ CREATE TABLE serie_numerica(
     contador INT DEFAULT 1, 
     sufijo TEXT DEFAULT '', 
     fecha_inicio DATE DEFAULT NULL,     -- Si procede, fechas de inicio y fin 
-    fecha_fin DATE DEFAULT NULL         -- de aplicación de la serie numérica.
+    fecha_fin DATE DEFAULT NULL,        -- de aplicación de la serie numérica.
+    cifras INT DEFAULT 4    -- 0: Sin especificar. 1: S0P, 2: S00P, 3: S000P...
 );
 
 CREATE TABLE cliente(
@@ -223,7 +224,13 @@ CREATE TABLE peticion(
     material_id INT REFERENCES material DEFAULT NULL, 
     fecha_solicitud DATE DEFAULT CURRENT_DATE, 
     fecha_recogida DATE DEFAULT NULL, 
-    observaciones TEXT DEFAULT ''
+    observaciones TEXT DEFAULT '', 
+    hora_recogida TIME DEFAULT CURRENT_TIME, 
+    usuario_id INT REFERENCES usuario DEFAULT NULL,
+    contacto_id INT REFERENCES contacto DEFAULT NULL, 
+    solicitante TEXT DEFAULT '' -- Not sure about deba ser un contacto 
+        -- también o incluso una FK de la tabla de solicitantes que no llegué 
+        -- a crear.
 );
 
 CREATE TABLE muestra(

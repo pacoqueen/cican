@@ -28,16 +28,19 @@
 ###################################################################
 
 
-import gtk
-from seeker import VentanaGenerica
+import gtk, os, sys
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
 from framework import pclases
+from formularios.ventana_generica import VentanaGenerica
 import gobject
 import utils
 import os
 from framework.configuracion import ConfigConexion
 from utils.ui import escalar_a
 from formularios.ventana_generica import _abrir_en_ventana_nueva
-from informes.factura_multipag import go_from_facturaVenta as imprimir_factura
+from reports.factura_multipag import go_from_facturaVenta as imprimir_factura
 from utils.informes import abrir_pdf
 
 class FacturasVenta(VentanaGenerica): 
@@ -102,6 +105,10 @@ class FacturasVenta(VentanaGenerica):
         if not self.objeto.obra:
             utils.ui.dialogo_info(titulo = "SELECCIONE CLIENTE", 
                 texto = "Debe seleccionar una obra para la factura.", 
+                padre = self.wids['ventana'])
+        if not self.objeto.obra.cliente:
+            utils.ui.dialogo_info(titulo = "SELECCIONE CLIENTE", 
+                texto = "La obra debe estar asignada a un cliente.", 
                 padre = self.wids['ventana'])
         else:
             if not self.objeto.formaDePago:
@@ -255,6 +262,8 @@ class FacturasVenta(VentanaGenerica):
         except AttributeError:
             pass    # No eligió tipo de factura.
         else:
+            if not serie_numerica:  # ¿No configurado? Una por defecto pues.
+                serie_numerica = tipo.serie_numerica = pclases.SerieNumerica() 
             numfactura = serie_numerica.get_next_numfactura(commit = True)
             f = pclases.FacturaVenta(numfactura = numfactura, 
                                      serieNumerica = serie_numerica)

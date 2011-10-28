@@ -29,8 +29,12 @@ Created on 18/05/2010
 
 '''
 
-import gtk
-from seeker import VentanaGenerica
+import gtk, os, sys
+if (os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == 
+    os.path.dirname(os.path.abspath(__file__)).split(os.path.sep)[-1]):
+    os.chdir("..")
+sys.path.append(".")
+from formularios.ventana_generica import VentanaGenerica
 from framework import pclases
 from formularios.graficas import charting
 from formularios.adjuntos import add_boton_adjuntos

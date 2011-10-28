@@ -29,11 +29,16 @@ Created on 01/06/2011
 
 '''
 
-import gtk
-from seeker import VentanaGenerica
+import os
+import gtk, os, sys
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
+from formularios.ventana_generica import VentanaGenerica
 from framework import pclases
 from formularios.graficas import charting
 import utils.ui
+from utils.mapa import Mapa
 
 class Direcciones(VentanaGenerica):
     def __init__(self, objeto = None, usuario = None, run = True):
@@ -44,6 +49,7 @@ class Direcciones(VentanaGenerica):
         """
         self.__clase = pclases.Direccion
         self._objetoreciencreado = None
+        self.mapa = Mapa()
         if objeto and isinstance(objeto, self.__clase):
             VentanaGenerica.__init__(self, objeto = objeto, usuario = usuario, 
                                      run = False, 
@@ -56,6 +62,7 @@ class Direcciones(VentanaGenerica):
             VentanaGenerica.__init__(self, clase = self.__clase, 
                                      usuario = usuario, run = False,
                                      ventana_marco = "direccion.glade")
+        self.put_mapa()
         # Si elijo un código postal, quiero que la ciudad se rellene sola:
         self.wids['codigoPostalID'].connect("changed", self.rellenar_ciudad)
         self.wids['codigoPostalID'].connect("focus-out-event", 
@@ -63,6 +70,34 @@ class Direcciones(VentanaGenerica):
         self.wids['b_nuevo_cp'].connect("clicked", self.nuevo_cp)
         if run:
             gtk.main()
+
+    def put_mapa(self):
+        m = self.wids['mapa_container']
+        self.mapa.put_mapa(m)
+
+    def actualizar_mapa(self, actualizar_objeto = True):
+        # OJO: Por defecto SIEMPRE va a intentar conectarse a Google. En 
+        # caso de trabajar sin conexión a Internet o cuando la dirección no 
+        # se encuentre, esto será un coñazo. FIXME
+        if not self.objeto.lat or not self.objeto.lon:
+            strdireccion = self.objeto.get_direccion_buscable()
+            lat, lon = self.mapa.get_latlon(strdireccion)
+            if lat and lon:
+                self.objeto.lat = lat
+                self.objeto.lon = lon
+                self.objeto.syncUpdate()
+                self.rellenar_widgets()
+        try:
+            self.mapa.centrar_mapa(self.objeto.lat, self.objeto.lon, 
+                                   #zoom = 5, 
+                                   track = False, flag = True)
+            #print self.mapa.zoom
+        except ValueError:
+            pass    # La dirección es incorrecta o no se ha encontrado.
+
+    def actualizar_ventana(self, *args, **kw):
+        VentanaGenerica.actualizar_ventana(self, *args, **kw)
+        self.actualizar_mapa()
 
     def nuevo_cp(self, boton):
         """
@@ -144,6 +179,7 @@ def buscar_ciudad_en_bd(nombre, ventana_padre = None):
         else:
             ciudad = None
     return ciudad
+
 
 def buscar_provincia_en_bd(nombre, ventana_padre = None):
     """

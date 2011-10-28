@@ -35,12 +35,14 @@
 ###################################################################
 
 
-import gtk
-from seeker import VentanaGenerica
+import gtk, os, sys
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
+from formularios.ventana_generica import VentanaGenerica
 from framework import pclases
 import gobject
 import utils
-import os
 
 class NombreVentana(VentanaGenerica): # <++>(VentanaGenerica):
     def __init__(self, objeto = None, usuario = None, run = True):

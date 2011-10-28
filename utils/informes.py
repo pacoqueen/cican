@@ -63,6 +63,29 @@ def abrir_pdf(fpdf):
         retcode = subprocess.call(("open", fpdf))
     return retcode
         
+def abrir_csv(csv, ventana_padre = None):
+    """
+    Si la plataforma es MS-Windows abre el archivo con la aplicación 
+    predeterminada para los archivos CSV (por desgracia me imagino que 
+    MS-Excel). Si no, intenta abrirlo con OpenOffice.org Calc.
+    """
+    # TODO: Problemón. Al ponerle el ampersand para mandarlo a segundo plano, sh siempre devuelve 0 como salida del comando, 
+    # así que no hay manera de saber cuándo se ha ejecutado bien y cuándo no.
+    if sys.platform != 'win32':     # Más general que os.name (que da "nt" en 
+                                    # los windows 2000 de las oficinas).
+        try:
+            res = os.system('xdg-open "%s" &' % csv)
+            assert res == 0
+        except AssertionError:
+            if not ( (not os.system('oocalc2 "%s" || oocalc "%s" &'%(csv,csv)))
+                    or (not os.system('oocalc "%s" &' % csv)) 
+                   ):
+                utils.dialogo_info(titulo = "OOO NO ENCONTRADO", 
+                                   texto = "No se encontró OpenOffice.org en el sistema.\nNo fue posible mostrar el archivo %s." % (csv), 
+                                   padre = ventana_padre) 
+    else:
+        # OJO: Esto no es independiente de la plataforma:
+        os.startfile(csv)
 
 import sys, Image, re, time, datetime 
 import reportlab

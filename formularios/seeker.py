@@ -44,7 +44,6 @@ sys.path.append(".")
 from framework import pclases
 import utils
 from formularios.resultado import Resultado
-from formularios.ventana_generica import VentanaGenerica
 
 class Seeker:
     """
@@ -231,6 +230,7 @@ def buscar_clases_pclases():
 
 
 if __name__ == "__main__":
+    from formularios.ventana_generica import VentanaGenerica
     if len(sys.argv) > 1:
         buscador = Seeker()
         buscador.buscar(sys.argv[1])

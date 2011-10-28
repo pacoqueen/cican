@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Copyright (C) Hadley Rich 2008 <hads@nice.net.nz>
@@ -17,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.
 """
 
+# http://nzjrs.github.com/osm-gps-map/
+
 import sys
 import os.path
 import gtk.gdk
@@ -27,19 +30,23 @@ gtk.gdk.threads_init()
 
 #Try static lib first
 mydir = os.path.dirname(os.path.abspath(__file__))
-# libdir = os.path.abspath(os.path.join(mydir, "..", "python", ".libs"))
-# sys.path.insert(0, libdir)
+libdir = os.path.abspath(os.path.join(mydir, "..", "libs"))
+sys.path.insert(0, libdir)
 imdir = os.path.abspath(os.path.join(mydir, "..", "imagenes"))
 
 import osmgpsmap
-print "using library: %s (version %s)" % (osmgpsmap.__file__, osmgpsmap.__version__)
+print "using library: %s (version %s)" % (osmgpsmap.__file__, 
+                                          osmgpsmap.__version__)
 
 assert osmgpsmap.__version__ == "0.7.3"
 
 class DummyMapNoGpsPoint(osmgpsmap.GpsMap):
     def do_draw_gps_point(self, drawable):
         pass
+
+
 gobject.type_register(DummyMapNoGpsPoint)
+
 
 class DummyLayer(gobject.GObject, osmgpsmap.GpsMapLayer):
     def __init__(self):
@@ -56,7 +63,10 @@ class DummyLayer(gobject.GObject, osmgpsmap.GpsMapLayer):
 
     def do_button_press(self, gpsmap, gdkeventbutton):
         return False
+
+
 gobject.type_register(DummyLayer)
+
 
 class UI(gtk.Window):
     def __init__(self):
@@ -83,11 +93,16 @@ class UI(gtk.Window):
         self.osm.connect('button_release_event', self.map_clicked)
 
         #connect keyboard shortcuts
-        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_FULLSCREEN, gtk.gdk.keyval_from_name("F11"))
-        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_UP, gtk.gdk.keyval_from_name("Up"))
-        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_DOWN, gtk.gdk.keyval_from_name("Down"))
-        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_LEFT, gtk.gdk.keyval_from_name("Left"))
-        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_RIGHT, gtk.gdk.keyval_from_name("Right"))
+        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_FULLSCREEN, 
+                                       gtk.gdk.keyval_from_name("F11"))
+        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_UP, 
+                                       gtk.gdk.keyval_from_name("Up"))
+        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_DOWN, 
+                                       gtk.gdk.keyval_from_name("Down"))
+        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_LEFT, 
+                                       gtk.gdk.keyval_from_name("Left"))
+        self.osm.set_keyboard_shortcut(osmgpsmap.KEY_RIGHT, 
+                                       gtk.gdk.keyval_from_name("Right"))
 
         #connect to tooltip
         self.osm.props.has_tooltip = True
@@ -195,7 +210,6 @@ Enter an repository URL to fetch map tiles from in the box below. Special metach
             except Exception, e:
                 print "ERROR:", e
                 self.osm = osm.GpsMap()
-
             self.vbox.pack_start(self.osm, True)
             self.osm.connect('button_release_event', self.map_clicked)
             self.osm.show()
@@ -212,7 +226,7 @@ Enter an repository URL to fetch map tiles from in the box below. Special metach
         self.osm.set_zoom(self.osm.props.zoom - 1)
 
     def home_clicked(self, button):
-        self.osm.set_center_and_zoom(-44.39, 171.25, 12)
+        self.osm.set_center_and_zoom(37.17456, -5.9264, 12)
 
     def on_query_tooltip(self, widget, x, y, keyboard_tip, tooltip, data=None):
         if keyboard_tip:

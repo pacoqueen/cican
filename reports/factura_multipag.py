@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ###############################################################################
-# Copyright (C) 2005-2008  Francisco José Rodríguez Bogado                    #
+# Copyright (C) 2005-2011  Francisco José Rodríguez Bogado                    #
 #                          (pacoqueen@users.sourceforge.net)                  #
 #                                                                             #
 # This file is part of GeotexInn.                                             #
@@ -546,7 +546,7 @@ def build_marco_logo_y_empresa(dde):
     tabla.setStyle(TableStyle([
         ("ALIGN", (0, 0), (1, 0), "RIGHT"),
         ("ALIGN", (1, 0), (-1, -1), "LEFT"),
-        ("VALIGN", (0, 0), (-1, -1), "CENTER"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
         ]))
     return tabla
 

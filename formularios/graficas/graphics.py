@@ -1643,7 +1643,11 @@ class Scene(gtk.DrawingArea):
         if self.tweener:
             self.tweener.update(delta)
 
-        self.fps = 1 / delta
+        try:
+            self.fps = 1 / delta
+        except ZeroDivisionError:
+            from sys import maxint
+            self.fps = maxint
 
 
         # start drawing

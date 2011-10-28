@@ -2282,3 +2282,116 @@
 2011-04-01 12:21:57,326 WARNING ventana.py::__init__ -> No se pudo establecer ancho de borde, icono de ventana o barra de estado. Excepción: No se ha podido abrir el archivo «imagenes/logo.xpm»: No existe el fichero o el directorio.
 2011-04-01 12:22:12,672 WARNING ventana.py::__init__ -> No se pudo establecer ancho de borde, icono de ventana o barra de estado. Excepción: No se ha podido abrir el archivo «imagenes/logo.xpm»: No existe el fichero o el directorio.
 2011-04-01 12:22:30,884 WARNING ventana.py::__init__ -> No se pudo establecer ancho de borde, icono de ventana o barra de estado. Excepción: No se ha podido abrir el archivo «imagenes/logo.xpm»: No existe el fichero o el directorio.
+2011-06-02 17:47:57,047 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 17:47:57,462 WARNING admin: Favoritos
+2011-06-02 17:47:57,486 WARNING admin: Menú iniciado
+2011-06-02 17:48:00,144 WARNING admin: Laboratorio
+2011-06-02 17:48:01,309 WARNING admin: Favoritos
+2011-06-02 17:48:02,244 WARNING admin:  Clientes 
+2011-06-02 17:48:02,406 WARNING admin:  Clientes 
+2011-06-02 17:48:02,514 WARNING admin: Cargar: clientes.py
+2011-06-02 17:48:24,398 WARNING LOGOUT: admin
+2011-06-02 17:50:14,263 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 17:50:14,405 WARNING admin: Favoritos
+2011-06-02 17:50:14,419 WARNING admin: Menú iniciado
+2011-06-02 17:50:15,884 WARNING admin:  Clientes 
+2011-06-02 17:50:16,012 WARNING admin:  Clientes 
+2011-06-02 17:50:16,112 WARNING admin: Cargar: clientes.py
+2011-06-02 17:50:31,754 WARNING LOGOUT: admin
+2011-06-02 17:51:16,619 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 17:51:16,757 WARNING admin: Favoritos
+2011-06-02 17:51:16,771 WARNING admin: Menú iniciado
+2011-06-02 17:51:18,405 WARNING admin:  Clientes 
+2011-06-02 17:51:18,491 WARNING admin:  Clientes 
+2011-06-02 17:51:18,552 WARNING admin: Cargar: clientes.py
+2011-06-02 17:51:42,026 WARNING LOGOUT: admin
+2011-06-02 17:52:34,458 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 17:52:34,601 WARNING admin: Favoritos
+2011-06-02 17:52:34,615 WARNING admin: Menú iniciado
+2011-06-02 17:52:36,140 WARNING admin:  Clientes 
+2011-06-02 17:52:36,251 WARNING admin:  Clientes 
+2011-06-02 17:52:36,372 WARNING admin: Cargar: clientes.py
+2011-06-02 17:52:50,766 WARNING LOGOUT: admin
+2011-06-02 17:53:18,826 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 17:53:18,961 WARNING admin: Favoritos
+2011-06-02 17:53:18,976 WARNING admin: Menú iniciado
+2011-06-02 17:53:20,301 WARNING admin:  Clientes 
+2011-06-02 17:53:20,411 WARNING admin:  Clientes 
+2011-06-02 17:53:20,512 WARNING admin: Cargar: clientes.py
+2011-06-02 17:53:35,002 WARNING LOGOUT: admin
+2011-06-02 18:06:23,272 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-06-02 18:06:23,419 WARNING admin: Favoritos
+2011-06-02 18:06:23,433 WARNING admin: Menú iniciado
+2011-06-02 18:06:24,710 WARNING admin:  Clientes 
+2011-06-02 18:06:24,835 WARNING admin:  Clientes 
+2011-06-02 18:06:24,897 WARNING admin: Cargar: clientes.py
+2011-06-02 18:06:39,570 WARNING LOGOUT: admin
+2011-06-09 18:50:09,095 WARNING LOGIN CORRECTO: vhbenito. IP: 192.168.5.51
+2011-06-09 18:50:09,267 WARNING vhbenito: Favoritos
+2011-06-09 18:50:09,299 WARNING vhbenito: Menú iniciado
+2011-06-09 18:50:13,042 WARNING vhbenito: General
+2011-06-09 18:50:14,430 WARNING vhbenito: Laboratorio
+2011-06-09 18:50:15,880 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:16,690 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:16,832 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:16,878 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:50:44,513 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,513 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,513 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,668 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,668 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,668 WARNING vhbenito:  Resultados de análisis 
+2011-06-09 18:50:44,700 WARNING vhbenito: Cargar: resultados.py
+2011-06-09 18:50:44,700 WARNING vhbenito: Cargar: resultados.py
+2011-06-09 18:50:44,700 WARNING vhbenito: Cargar: resultados.py
+2011-06-09 18:50:50,380 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,380 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,380 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,380 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,536 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,536 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,536 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,536 WARNING vhbenito:  Solicitudes de recogida 
+2011-06-09 18:50:50,598 WARNING vhbenito: Cargar: peticiones.py
+2011-06-09 18:50:50,598 WARNING vhbenito: Cargar: peticiones.py
+2011-06-09 18:50:50,598 WARNING vhbenito: Cargar: peticiones.py
+2011-06-09 18:50:50,598 WARNING vhbenito: Cargar: peticiones.py
+2011-06-09 18:50:55,138 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,138 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,138 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,138 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,138 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,279 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,279 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,279 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,279 WARNING vhbenito: Favoritos
+2011-06-09 18:50:55,279 WARNING vhbenito: Favoritos
+2011-06-09 18:50:57,259 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,259 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,259 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,259 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,259 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,401 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,401 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,401 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,401 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,401 WARNING vhbenito:  Laborantes 
+2011-06-09 18:50:57,415 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:50:57,415 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:50:57,415 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:50:57,415 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:50:57,415 WARNING vhbenito: Cargar: laborantes.py
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-06-09 18:51:06,387 WARNING LOGOUT: vhbenito
+2011-07-11 12:54:45,046 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.251
+2011-07-11 12:54:45,265 WARNING admin: Favoritos
+2011-07-11 12:54:45,280 WARNING admin: Menú iniciado
+2011-07-11 12:54:49,625 WARNING admin: General
+2011-07-11 12:54:51,140 WARNING admin:  Clientes 
+2011-07-11 12:54:52,265 WARNING admin: Cargar: clientes.py
+2011-07-11 12:55:27,233 WARNING LOGOUT: admin
+2011-07-11 12:55:27,233 WARNING LOGOUT: admin

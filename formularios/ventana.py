@@ -810,8 +810,12 @@ class Ventana(object):
         los callbacks.
         """
         for wid_con, func in dict.iteritems():
-            wid,con = wid_con.split('/')
-            h_id = self.wids[wid].connect(con,func)
+            wid, con = wid_con.split('/')
+            try:
+                h_id = self.wids[wid].connect(con,func)
+            except TypeError:
+                print wid, type(self.wids[wid]), self.wids[wid].get_tree_view()
+                continue
             try:
                 self.handlers_id[wid][con].append(h_id)
             except KeyError:

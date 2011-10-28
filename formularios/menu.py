@@ -27,7 +27,7 @@
 import pygtk
 pygtk.require('2.0')
 import gtk, gtk.glade, gobject 
-import os, sys, traceback, datetime
+import os, sys, traceback, datetime, signal
 if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
     os.chdir("..")
 sys.path.append(".")
@@ -879,4 +879,21 @@ if __name__ == '__main__':
     except ImportError:
         print _("Optimizaciones no disponibles.")
     main()
+    # Si se ha usado el GMapCatcher, habrá por ahí algún que otro hilo 
+    # medio zombi. Suicidio en tres, dos, uno...
+    pid = os.getpid()
+    # send ourselves sigquit, particularly necessary in posix as
+    # download threads may be holding system resources - python
+    # signals in windows implemented in python 2.7
+    #if os.name == 'posix':
+    try:
+        os.kill(pid, signal.SIGQUIT)
+    except AttributeError:  # Python <2.7
+        import ctypes
+        def kill(pid):
+            """kill function for Win32"""
+            kernel32 = ctypes.windll.kernel32
+            handle = kernel32.OpenProcess(1, 0, pid)
+            return (0 != kernel32.TerminateProcess(handle, 0))
+        kill(pid)
 

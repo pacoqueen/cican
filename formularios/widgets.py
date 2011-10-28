@@ -49,11 +49,19 @@ class Widgets:
         builder.add_from_file(gladefile)
         res = {}
         for w in builder.get_objects():
-            if w.name:  # En GTK < 2.20, esto está vacío.
+            if hasattr(w, "name") and w.name: # En GTK < 2.20, esto está vacío.
                 name = w.name
             else:
-                name = gtk.Buildable.get_name(w)
-                w.set_property("name", name)
+                try:
+                    name = gtk.Buildable.get_name(w)
+                    w.set_property("name", name)
+                except TypeError: # Los TreeSelection no implementan Buildable.
+                    try:
+                        str_tipo = str(type(ts)).split()[1].split(".")[1]\
+                                       .replace("'", "") 
+                    except:
+                        str_tipo = "unknown"
+                    name = "%s_%s" % (str_tipo, hash(w)) 
             res[name] = w
         return res
         

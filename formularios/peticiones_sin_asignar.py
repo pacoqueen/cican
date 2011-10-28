@@ -29,36 +29,172 @@ Created on 24/02/2011
     para recoger las muestras e imprimir un listado de ruta de cada uno.
 
 '''
-
+import pygtk
+pygtk.require('2.0')
 import gtk
-from seeker import VentanaGenerica
+import sys, os, datetime
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
 from framework import pclases
-from formularios.graficas import charting
+from ventana_consulta import VentanaConsulta
+from ventana_generica import _abrir_en_ventana_nueva as abrir, GALACTUS
+import utils, utils.mapa
 
-class PeticionesSinAsignar(VentanaGenerica): 
-    def __init__(self, objeto = None, usuario = None, run = True):
+class PeticionesSinAsignar(VentanaConsulta): 
+    def __init__(self, objeto = None, usuario = None, run = True, 
+                 fecha = datetime.date.today()):
         """
         Constructor. objeto puede ser un objeto de pclases con el que
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
-        self.__clase = None # TODO: PORASQUI: La idea es poder asignar empleados desde la lista de peticiones sin asignar del TreeView, pero todo el framework de ventanas está pensado para tener una clase activa, y eso iría sin clase ni botones de nuevo, guardar ni nada de eso. 
-        self._objetoreciencreado = None
-        if objeto and isinstance(objeto, self.__clase):
-            VentanaGenerica.__init__(self, objeto = objeto, usuario = usuario, 
-                                     run = False, 
-                                     ventana_marco = "peticiones_sin_asignar")
-        elif objeto:
-            VentanaGenerica.__init__(self, objeto = objeto, usuario = usuario, 
-                                     clase = self.__clase, run = False, 
-                                     ventana_marco = "peticiones_sin_asignar")
-        else:
-            VentanaGenerica.__init__(self, clase = self.__clase, 
-                                     usuario = usuario, run = False, 
-                                     ventana_marco = "peticiones_sin_asignar")
+        __clase = pclases.Peticion
+        self.__usuario = usuario
+        if objeto:
+            fecha = self.objeto.fechaRecogida
+        VentanaConsulta.__init__(self, 
+                                 usuario = usuario, 
+                                 clase = __clase, 
+                                 run = False, 
+                                 ventana_marco="peticiones_sin_asignar.glade")
+        self.build_tabla_laborantes()
+        self.build_tabla_peticiones_sin_asignar()
+        self.build_tabla_peticiones_asignadas()
+        self.wids['b_asignar'].connect("clicked", self.asignar)
+        self.actualizar_ventana()
+        self.wids['calendario'].connect('day-selected',self.actualizar_ventana)
+        self.wids['calendario'].select_month(fecha.month - 1, fecha.year)
+        self.wids['calendario'].select_day(fecha.day)
+        self.mapa = utils.mapa.Mapa()
+        self.mapa.put_mapa(self.wids["vpaned1"])
+        sel = self.wids['tv_sin_asignar'].get_selection()
+        sel.connect("changed", self.actualizar_mapa)
+        sel = self.wids['tv_asignadas'].get_selection()
+        sel.connect("changed", self.actualizar_mapa, False)
         if run:
             gtk.main()
+
+    def actualizar_mapa(self, sel, track = True, flag = True):
+        model, paths = sel.get_selected_rows()
+        for path in paths:
+            puid = model[path][-1]
+            obra = pclases.getObjetoPUID(puid)
+            d = obra.direccion 
+            try:
+                self.mapa.centrar_mapa(d.lat, d.lon, zoom = 12, track = track, 
+                                       flag = flag)
+            except AttributeError:
+                pass    # La obra no tiene dirección asignada en su ficha.
+
+    def build_tabla_laborantes(self):
+        cols = (("Nombre", "gobject.TYPE_STRING", False, True, True, None), 
+                ("Recogidas asignadas", 
+                    "gobject.TYPE_STRING", False, True, False, None), 
+                ("PUID", "gobject.TYPE_STRING", False, False, False, None))
+        utils.ui.preparar_treeview(self.wids['tv_laborantes'], cols)
+        self.wids['tv_laborantes'].connect("row-activated", 
+            self._abrir_en_ventana_nueva, self.__usuario, GALACTUS, None, 
+            pclases.Empleado)
+
+    def build_tabla_peticiones_asignadas(self):
+        cols = (("Obra", "gobject.TYPE_STRING", False, True, True, None), 
+                ("Dirección", "gobject.TYPE_STRING", False, True, False, None),
+                ("Material", "gobject.TYPE_STRING", False, True, False, None), 
+                ("PUID", "gobject.TYPE_STRING", False, False, False, None))
+        utils.ui.preparar_listview(self.wids['tv_sin_asignar'], cols, 
+                                   multi = True)
+        self.wids['tv_sin_asignar'].connect("row-activated", 
+            self._abrir_en_ventana_nueva, self.__usuario, GALACTUS, None, 
+            pclases.Peticion)
+
+    def build_tabla_peticiones_sin_asignar(self):
+        cols = (("Obra", "gobject.TYPE_STRING", False, True, True, None), 
+                ("Dirección", "gobject.TYPE_STRING", False, True, False, None),
+                ("Material", "gobject.TYPE_STRING", False, True, False, None), 
+                ("Laborante", "gobject.TYPE_STRING", False, True, False, None), 
+                ("PUID", "gobject.TYPE_STRING", False, False, False, None))
+        utils.ui.preparar_listview(self.wids['tv_asignadas'], cols)
+        self.wids['tv_asignadas'].connect("row-activated", 
+            self._abrir_en_ventana_nueva, self.__usuario, GALACTUS, None, 
+            pclases.Peticion)
+
+    def _abrir_en_ventana_nueva(self, *args, **kw):
+        abrir(*args, **kw)
+        self.actualizar_ventana()
     
+    def rellenar_widgets(self):
+        self.rellenar_tabla_laborantes()
+        self.rellenar_tablas_peticiones()
+
+    def rellenar_tabla_laborantes(self):
+        model = self.wids['tv_laborantes'].get_model()
+        model.clear()
+        padres = {}
+        for e in pclases.Empleado.buscar_laborantes():
+            padres[e] = model.append(None, (e.get_info(), 
+                                            "", 
+                                            e.get_puid()))
+        fecha_seleccionada = self.get_fecha_seleccionada() 
+        for p in pclases.Peticion.selectBy(fechaRecogida = fecha_seleccionada):
+            laborante = p.empleado
+            try:
+                padre = padres[laborante]
+            except KeyError:
+                # El laborante ya no lo es, así que no lo listo.
+                pass
+            else:
+                model.append(padre, ("", p.get_info(), p.get_puid()))
+                try:
+                    model[padre][1] = utils.numero.float2str(
+                        utils.numero._float(model[padre][1]) + 1, precision=0)
+                except (TypeError, ValueError):
+                    model[padre][1] = "1"
+
+    def get_fecha_seleccionada(self):
+        """
+        Devuelve la fecha del gtk.Calendar pero como un datetime.
+        """
+        y, m, d = self.wids['calendario'].get_date()
+        fecha = datetime.date(y, m+1, d)    # Mes empieza en 0 en gtk.Calendar
+        return fecha
+
+    def rellenar_tablas_peticiones(self):
+        fecha_seleccionada = self.get_fecha_seleccionada() 
+        self.wids['tv_sin_asignar'].get_model().clear()
+        self.wids['tv_asignadas'].get_model().clear()
+        for p in pclases.Peticion.selectBy(fechaRecogida = fecha_seleccionada):
+            fila = ((p.obra and p.obra.get_info() or "", 
+                     p.direccion and p.direccion.get_direccion_completa() 
+                        or "", 
+                     p.material and p.material.get_info() or ""))
+            if not p.empleado:   # No asignada
+                model = self.wids['tv_sin_asignar'].get_model()
+            else:
+                model = self.wids['tv_asignadas'].get_model()
+                fila += (p.empleado.get_nombre_completo(), )
+            fila += (p.get_puid(), )
+            model.append(fila)
+    
+    def asignar(self, boton):
+        model, iter = self.wids['tv_laborantes'].get_selection().get_selected()
+        if not iter:
+            utils.ui.dialogo_info(titulo = "SELECCIONE UN LABORANTE", 
+                texto = "Debe seleccionar un laborante al que asignar las "
+                        "peticiones de recogida de material.", 
+                padre = self.wids['ventana'])
+        else:
+            empleado = pclases.getObjetoPUID(model[iter][-1])
+            sel = self.wids['tv_sin_asignar'].get_selection()  
+            sel.selected_foreach(self.asiganda, empleado)
+            self.actualizar_ventana()
+    
+    def asiganda(self, treemodel, path, iter, laborante):
+        p = pclases.getObjetoPUID(treemodel[iter][-1])
+        p.empleado = laborante
+        p.sync()
+
+
 def main():
     from formularios.options_ventana import parse_options
     params, opt_params = parse_options()

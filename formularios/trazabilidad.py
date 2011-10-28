@@ -78,7 +78,10 @@ class Trazabilidad(Ventana):
                                  script_inicio = """import sys, os, pygtk, gtk, gtk.glade, utils
 from framework import pclases
 import datetime
-from seeker import VentanaGenerica as Ver
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
+from formularios.ventana_generica import VentanaGenerica as Ver
 dir()
 #Ver(self.objeto)
 """, 

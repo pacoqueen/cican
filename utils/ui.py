@@ -1543,7 +1543,6 @@ def launch_browser_mailer(dialogo, uri, tipo, ventana_padre = None):
                          '\nURL seleccionada: %s' % uri, 
                          padre = ventana_padre)
 
-
 def escalar_a(ancho, alto, pixbuf):
     """
     Devuelve un pixbuf escalado en proporción para que como máximo tenga 
@@ -1674,4 +1673,58 @@ def cambiar_por_combo(tv, numcol, opts, campo, ventana_padre = None):
     column.pack_start(cellcombo)
     column.set_attributes(cellcombo, text = numcol)
 
+def sqltype2gobject(col):
+    """
+    Devuelve una cadena de texto con el tipo que le correspondería en gobject 
+    al que tiene la columna col en sqlobject.
+    """
+    from framework.pclases import SOStringCol as SQLObjectStringCol
+    from framework.pclases import SOBoolCol as SQLObjectBoolCol
+    from framework.pclases import SODateCol as SQLObjectDateCol
+    from framework.pclases import SODateTimeCol as SQLObjectDateTimeCol
+    from framework.pclases import SOBigIntCol as SQLObjectBigIntCol
+    from framework.pclases import SOFloatCol as SQLObjectFloatCol
+    from framework.pclases import SOIntCol as SQLObjectIntCol
+    from framework.pclases import SOSmallIntCol as SQLObjectSmallIntCol
+    from framework.pclases import SOTimeCol as SQLObjectTimeCol
+    from framework.pclases import SOTimestampCol as SQLObjectTimestampCol
+    from framework.pclases import SOTinyIntCol as SQLObjectTinyIntCol
+    from framework.pclases import SOUnicodeCol as SQLObjectUnicodeCol
+    equivalencia = {'gobject.TYPE_BOOLEAN': (SQLObjectBoolCol, ), 
+                    'gobject.TYPE_FLOAT': (SQLObjectFloatCol, ), 
+                    'gobject.TYPE_DOUBLE': (), 
+                    'gobject.TYPE_STRING': (SQLObjectStringCol, 
+                                            SQLObjectDateCol, 
+                                            SQLObjectDateTimeCol, 
+                                            SQLObjectTimeCol, 
+                                            SQLObjectTimestampCol, 
+                                            SQLObjectUnicodeCol), 
+                    'gobject.TYPE_INT': (SQLObjectIntCol, 
+                                         SQLObjectSmallIntCol, 
+                                         SQLObjectTinyIntCol), 
+                    'gobject.TYPE_INT64': (SQLObjectBigIntCol, )}
+    default = "gobject.TYPE_STRING"
+    tipo = type(col)
+    for k in equivalencia:
+        for v in equivalencia[k]:
+            if v == tipo:
+                return k
+    return default
+
+def set_fecha(entry):
+    """
+    Muestra el diálogo de selección de fecha y escribe en el «entry» la 
+    fecha seleccionada.
+    """
+    texto = entry.get_text()
+    try:
+        defecto = fecha.parse_fecha(texto)
+    except ValueError:
+        defecto = datetime.date.today()
+    ventana_padre = None
+    padre = entry.parent
+    while padre != None:
+        padre = padre.parent
+    date = mostrar_calendario(fecha_defecto = defecto, padre = ventana_padre)
+    entry.set_text(fecha.str_fecha(date))
 

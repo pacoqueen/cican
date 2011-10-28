@@ -101,6 +101,8 @@ def parse_fecha(txt):
         txt = txt.replace("UDM", tmpdate.strftime("%d/%m/%Y"))
     if txt.count("-") == 2:
         txt = txt.replace("-", "/")
+    if txt.count("/") == 1:
+        txt += "/%d" % datetime.date.today().year
     if "+" in txt or "-" in txt:
         # DONE: Aquí hay un pequeño problema. Ya no acepta fechas 22-11-1979.
         txt = txt.replace("D", " * datetime.timedelta(days = 1)")
@@ -223,7 +225,7 @@ def parse_fechahora(txt):
 
 def parse_hora(txt):
     """
-    Devuelve un datetime.timedelta a partir del 
+    Devuelve un datetime.time a partir del 
     texto recibido.
     """
     if ":" not in txt:
@@ -236,7 +238,8 @@ def parse_hora(txt):
     else:
         segundo = 0
         hora, minuto = map(numero._float, valores)
-    return datetime.timedelta(hours = hora, minutes = minuto, seconds = segundo)
+    hora, minuto = int(hora), int(minuto)
+    return datetime.time(hour = hora, minute = minuto, second = segundo)
 
 def abs_fecha(fecha):
     """

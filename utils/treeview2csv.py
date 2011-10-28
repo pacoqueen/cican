@@ -24,7 +24,6 @@
 ###############################################################################
 
 import sys, os
-import geninformes
 try:
     import utils
     from trazabilidad import Trazabilidad
@@ -33,12 +32,8 @@ except ImportError:
     import utils
     from trazabilidad import Trazabilidad
 import mx, mx.DateTime
-try:
-    import pclases
-except ImportError:
-    sys.path.append(os.path.join('..', 'framework'))
-    import pclases
-from informes import abrir_csv
+from framework import pclases
+from informes import abrir_csv, give_me_the_name_baby
 from tempfile import gettempdir
 import csv
 
@@ -76,7 +71,7 @@ def get_nombre_archivo_from_tv(tv):
     del nombre del widget TreeView.
     """
     nomtreeview = tv.get_name().replace(" ", "_")
-    nomarchivo = os.path.join(gettempdir(), "%s_%s.csv" % (nomtreeview, geninformes.give_me_the_name_baby()))
+    nomarchivo = os.path.join(gettempdir(), "%s_%s.csv" % (nomtreeview, give_me_the_name_baby()))
     return nomarchivo
 
 def get_datos_from_tv(tv, filtro_ceros):
@@ -106,7 +101,7 @@ def get_datos_from_tv(tv, filtro_ceros):
                 dato = valor and u"Sí".encode("iso-8859-15") or "No"
             else:
                 try:
-                    valor = utils._float(valor)
+                    valor = utils.numero._float(valor)
                     valor = str(valor).replace(".", ",")
                 except ValueError:
                     pass    # No es flotante ni se puede convertir a él.
@@ -157,7 +152,7 @@ def agregar_hijos(fila, numcols, numespacios, tv):
                     dato = valor and u"Sí".encode("iso-8859-15") or "No"
                 else:
                     try:
-                        valor = utils._float(valor)
+                        valor = utils.numero._float(valor)
                         valor = str(valor).replace(".", ",")
                     except ValueError:
                         pass    # No es flotante ni se puede convertir a él.

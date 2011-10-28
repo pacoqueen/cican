@@ -411,10 +411,21 @@ class PRPCTOO:
         id = self.id
         puid = "%s:%d" % (pre, id)
         return puid
-
     puid = property(get_puid)
 
+    def search_col_by_name(clase, nombrecol):
+        """
+        Devuelve el objeto columna de sqlmeta que se corresponde con el nombre 
+        recibido o None si no se encuentra.
+        """
+        try:
+            return clase.sqlmeta.columnDefinitions[nombrecol]
+        except KeyError:
+            return None
+    search_col_by_name = classmethod(search_col_by_name)
 
+
+#### Funciones auxiliares ####################################################
 def starter(objeto, *args, **kw):
     """
     Método que se ejecutará en el constructor de todas las 
@@ -446,7 +457,6 @@ def getObjetoPUID(puid):
     objeto = clase.get(id)
     return objeto
 
-#### Funciones auxiliares ####################################################
 def orden_por_campo_o_id(objeto1, objeto2, campo):
     """
     Ordena por el campo recibido e ID. «campo» tiene preferencia.
@@ -684,7 +694,20 @@ class Empleado(SQLObject, PRPCTOO):
         return res
 
     def get_info(self):
-        return self.get_nombre_completo() + " (" + self.dni + ")"
+        res = self.get_nombre_completo() 
+        if self.dni:
+            res += " (" + self.dni + ")"
+        return res
+
+    @staticmethod
+    def buscar_laborantes():
+        """
+        Devuelve una lista con todos los laborantes de la base de datos.
+        """
+        laborantes = []
+        for c in CategoriaLaboral.selectBy(laborante = True):
+            laborantes += c.empleados
+        return laborantes
 
 
 class Cliente(SQLObject, PRPCTOO):
@@ -1322,6 +1345,26 @@ class Direccion(SQLObject, PRPCTOO):
             res = res[:-1]
         return res
 
+    def get_direccion_buscable(self):
+        """
+        Devuelve la dirección de modo que pueda ser buscada en GoogleMaps:
+        tipo de vía + dirección + cp + ciudad
+        """
+        res = ""
+        if self.tipoDeVia:
+            res = self.tipoDeVia.tipoDeVia
+        res += " " + self.direccion
+        if self.codigoPostal:
+            res += ", " + self.codigoPostal.cp
+        try:
+            res += " " + self.ciudad.ciudad
+        except AttributeError:
+            try:
+                res += " " + self.codigoPostal.ciudad.ciudad
+            except:
+                pass    # Sin ciudad :(
+        return res
+
     def get_direccion_multilinea(self):
         """
         Devuelve la dirección completa pero además incluye en líneas 
@@ -1334,21 +1377,26 @@ class Direccion(SQLObject, PRPCTOO):
             linea_cp = cp.cp
             if cp.ciudad:
                 reg_ciudad = cp.ciudad
-            if reg_ciudad:
+        if reg_ciudad:
+            try:
                 linea_cp += " - %s" % reg_ciudad.ciudad
+            except NameError:
+                linea_cp = reg_ciudad.ciudad
         if reg_ciudad and reg_ciudad.provincia.provincia != reg_ciudad.ciudad:
+            provincia = reg_ciudad.provincia
             try:
                 linea_cp += " (%s)" % provincia.provincia
             except NameError:
                 linea_cp = provincia.provincia
-        lineas.append(linea_cp)
+            lineas.append(linea_cp)
         if self.pais:
             lineas.append(self.pais.pais)
+        lineas =  [l for l in lineas if l]
         res = "\n".join(lineas)
         return res
 
     def get_info(self):
-        return self.get_direccion_completa()
+        return self.get_direccion_multilinea().replace("\n", " - ")
 
     @staticmethod
     def get_direccion_por_defecto():
@@ -1451,10 +1499,14 @@ class SerieNumerica(SQLObject, PRPCTOO):
         """
         self.sync()
         # CWT: El número entre prefijo y sufijo pasa a tener 4 dígitos como 
-        # mínimo
-        numfactura = "%s%04d%s" % (self.prefijo, 
-                                   self.contador - 1 + inc, 
-                                   self.sufijo)
+        # mínimo.
+        # Al final he hecho que por defecto sean 4 con el DEFAULT de la BD, 
+        # pero no obligo a que sean 4 como mínimo. Sé lo que me hago. Los 
+        # cambios son inevitables y los clientes caprichosos.
+        formato = "%s%0" + str(self.cifras) + "d%s" 
+        numfactura = formato % (self.prefijo, 
+                                self.contador - 1 + inc, 
+                                self.sufijo)
         if commit:
             self.contador += inc
             self.syncUpdate()
@@ -1487,8 +1539,8 @@ class SerieNumerica(SQLObject, PRPCTOO):
 
     def get_info(self):
         res = "{0}{1}{2} ({3} facturas)".format(
-            self.prefijo, self.contador, self.sufijo, 
-            len(self.facturasVenta))
+            self.prefijo, ("%0" + str(self.cifras) + "d") % self.contador, 
+            self.sufijo, len(self.facturasVenta))
         return res
 
 
@@ -1581,7 +1633,7 @@ class Factura:
         try:
             pp = fdp.periodoPago 
             numvtos = pp.numeroVencimientos
-            fecha += self.fecha + pp.diaInicio
+            fecha = self.fecha + datetime.timedelta(pp.diaInicio)
             delta = pp.diasEntreVencimientos
         except AttributeError:
             numvtos = 1
@@ -1600,7 +1652,7 @@ class Factura:
             if fecha.weekday >= 5:
                 fecha += datetime.timedelta(days = 1)
             vto = Vencimiento.crear_vencimiento(self, modo, fecha, importe)
-            fecha += delta 
+            fecha += datetime.timedelta(delta)
             vtos.append(vto)
         if retencion:
             self.crear_vencimiento_retencion(retencion, modo)
@@ -1724,7 +1776,7 @@ class Peticion(SQLObject, PRPCTOO):
         starter(self, *args, **kw)
 
     def get_info(self):
-        return "Petición %d (%s)" % (self.id, 
+        return "Petición %d (solicitada el %s)" % (self.id, 
                                     utils.fecha.str_fecha(self.fechaSolicitud))
 
 
@@ -1947,6 +1999,7 @@ class FormaDePago(SQLObject, PRPCTOO):
     def get_info(self):
         return self.descripcion
 
+
 class ModoPago(SQLObject, PRPCTOO):
     Cobros = MultipleJoin("Cobro")
     VencimientosCobro = MultipleJoin("VencimientoCobro")
@@ -1959,6 +2012,7 @@ class ModoPago(SQLObject, PRPCTOO):
 
     def get_info(self):
         return self.nombre
+
 
 class PeriodoPago(SQLObject, PRPCTOO):
     FormasDePago = MultipleJoin("FormaDePago")

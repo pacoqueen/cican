@@ -2326,3 +2326,91 @@
 2011-06-02 18:06:24,835 WARNING admin:  Clientes 
 2011-06-02 18:06:24,897 WARNING admin: Cargar: clientes.py
 2011-06-02 18:06:39,570 WARNING LOGOUT: admin
+2011-08-23 10:14:17,296 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-08-23 10:14:17,588 WARNING admin: Favoritos
+2011-08-23 10:14:17,604 WARNING admin: Menú iniciado
+2011-08-23 10:14:20,857 WARNING admin:  Clientes 
+2011-08-23 10:14:21,295 WARNING admin:  Clientes 
+2011-08-23 10:14:21,576 WARNING admin:  Clientes 
+2011-08-23 10:14:21,744 WARNING admin: Cargar: clientes.py
+2011-08-23 10:17:34,314 WARNING admin: Cargar: trazabilidad.py
+2011-08-23 10:17:43,321 WARNING admin:  Resultados de análisis 
+2011-08-23 10:17:44,935 WARNING admin:  Solicitudes de recogida 
+2011-08-23 10:17:45,048 WARNING admin:  Solicitudes de recogida 
+2011-08-23 10:17:46,064 WARNING admin:  Solicitudes de recogida 
+2011-08-23 10:17:46,192 WARNING admin:  Solicitudes de recogida 
+2011-08-23 10:17:46,244 WARNING admin: Cargar: peticiones.py
+2011-08-23 10:22:39,519 WARNING LOGOUT: admin
+2011-08-26 12:44:47,397 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-08-26 12:44:47,816 WARNING admin: Favoritos
+2011-08-26 12:44:47,848 WARNING admin: Menú iniciado
+2011-08-26 12:44:49,196 WARNING admin:  Clientes 
+2011-08-26 12:44:49,332 WARNING admin:  Clientes 
+2011-08-26 12:44:49,394 WARNING admin: Cargar: clientes.py
+2011-08-26 12:45:33,676 WARNING LOGOUT: admin
+2011-09-15 13:38:25,617 WARNING ventana.py::actualizar_objeto_y_enlaces -> No se pudo forzar la actualización completa.
+2011-09-15 13:38:25,617 WARNING ventana.py::actualizar_objeto_y_enlaces -> No se pudo forzar la actualización completa.
+2011-09-15 13:38:25,617 WARNING ventana.py::actualizar_objeto_y_enlaces -> No se pudo forzar la actualización completa.
+2011-09-15 13:38:25,617 WARNING ventana.py::actualizar_objeto_y_enlaces -> No se pudo forzar la actualización completa.
+2011-09-19 13:25:31,396 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-19 13:25:31,582 WARNING admin: Favoritos
+2011-09-19 13:25:31,598 WARNING admin: Menú iniciado
+2011-09-19 13:25:33,919 WARNING admin:  Solicitudes de recogida 
+2011-09-19 13:25:34,046 WARNING admin:  Solicitudes de recogida 
+2011-09-19 13:25:34,118 WARNING admin: Cargar: peticiones.py
+2011-09-19 13:25:42,270 WARNING LOGOUT: admin
+2011-09-20 17:51:38,688 WARNING Acceso erróneo. Usuario: admin. IP: 192.168.5.21
+2011-09-20 17:51:43,733 WARNING Acceso erróneo. Usuario: admin. IP: 192.168.5.21
+2011-09-20 17:51:50,402 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-20 17:51:50,561 WARNING admin: Favoritos
+2011-09-20 17:51:50,578 WARNING admin: Menú iniciado
+2011-09-20 17:51:54,143 WARNING admin: Laboratorio
+2011-09-20 17:51:55,772 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:51:55,876 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:51:55,929 WARNING admin: Cargar: peticiones.py
+2011-09-20 17:52:01,439 WARNING LOGOUT: admin
+2011-09-20 17:52:38,277 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-20 17:52:38,409 WARNING admin: Favoritos
+2011-09-20 17:52:38,427 WARNING admin: Menú iniciado
+2011-09-20 17:52:40,260 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:52:40,413 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:52:40,514 WARNING admin: Cargar: peticiones.py
+2011-09-20 17:52:54,051 WARNING LOGOUT: admin
+2011-09-20 17:53:22,341 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-20 17:53:22,480 WARNING admin: Favoritos
+2011-09-20 17:53:22,496 WARNING admin: Menú iniciado
+2011-09-20 17:53:24,684 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:53:24,828 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:53:24,888 WARNING admin: Cargar: peticiones.py
+2011-09-20 17:53:30,396 WARNING admin:  Clientes 
+2011-09-20 17:53:30,532 WARNING admin:  Clientes 
+2011-09-20 17:53:30,613 WARNING admin: Cargar: clientes.py
+2011-09-20 17:53:48,767 WARNING LOGOUT: admin
+2011-09-20 17:54:17,733 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-20 17:54:17,853 WARNING admin: Favoritos
+2011-09-20 17:54:17,871 WARNING admin: Menú iniciado
+2011-09-20 17:54:19,764 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:54:19,877 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:54:19,935 WARNING admin: Cargar: peticiones.py
+2011-09-20 17:54:24,126 WARNING LOGOUT: admin
+2011-09-20 17:54:37,666 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-09-20 17:54:37,786 WARNING admin: Favoritos
+2011-09-20 17:54:37,803 WARNING admin: Menú iniciado
+2011-09-20 17:54:41,796 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:54:41,911 WARNING admin:  Solicitudes de recogida 
+2011-09-20 17:54:41,974 WARNING admin: Cargar: peticiones.py
+2011-09-20 17:54:51,776 WARNING LOGOUT: admin
+2011-10-13 14:03:33,947 WARNING LOGIN CORRECTO: admin. IP: 192.168.0.2
+2011-10-13 14:03:34,268 WARNING admin: Favoritos
+2011-10-13 14:03:34,291 WARNING admin: Menú iniciado
+2011-10-13 14:03:36,242 WARNING admin:  Clientes 
+2011-10-13 14:03:36,369 WARNING admin:  Clientes 
+2011-10-13 14:03:36,448 WARNING admin: Cargar: clientes.py
+2011-10-13 14:04:01,112 WARNING LOGOUT: admin
+2011-10-26 14:05:11,067 WARNING LOGIN CORRECTO: admin. IP: 192.168.5.21
+2011-10-26 14:05:11,377 WARNING admin: Favoritos
+2011-10-26 14:05:11,400 WARNING admin: Menú iniciado
+2011-10-26 14:05:13,914 WARNING admin:  Clientes 
+2011-10-26 14:05:14,042 WARNING admin:  Clientes 
+2011-10-26 14:05:14,180 WARNING admin: Cargar: clientes.py
+2011-10-26 17:11:10,173 WARNING LOGOUT: admin

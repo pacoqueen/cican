@@ -29,12 +29,17 @@ Created on 30/11/2010
 
 '''
 
-import gtk
-from seeker import VentanaGenerica
+# TODO: El label l_serieNumerica no se respeta y VentanaGenerica crea otro label para el desplegable de serieNumerica.
+
+import gtk, os, sys
+import datetime
+if os.path.realpath(os.path.curdir).split(os.path.sep)[-1] == "formularios":
+    os.chdir("..")
+sys.path.append(".")
 from framework import pclases
 from formularios.graficas import charting
+from formularios.ventana_generica import VentanaGenerica
 import utils.ui
-import datetime
 from utils.informes import abrir_pdf
 
 class Clientes(VentanaGenerica): 
