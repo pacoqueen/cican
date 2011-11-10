@@ -82,6 +82,7 @@ class VentanaInformes(VentanaGenerica):
         """
         super(VentanaInformes, self).actualizar_ventana(*args, **kw)
 
+
 def main():
     """
     Parsea las opciones y abre la ventana en un nuevo proceso.

@@ -76,8 +76,15 @@ class Clientes(VentanaGenerica):
         Busca todos los resultados de laboratorio no facturados, los agrupa 
         por mes, crea una factura por cada uno de ellos y obra y las "imprime".
         """
-        _resultados = pclases.Resultado.select(
-            pclases.Resultado.q.lineaDeVenta == None)
+        # Informes no facturados:
+        informes = pclases.Informe.select(
+            pclases.Informe.q.lineaDeVentaID == None)
+        _resultados = []
+        for i in informes:
+            for r in i.resultados:
+                _resultados.append(r)
+        #_resultados = pclases.Resultado.select(
+        #    pclases.Resultado.q.lineaDeVenta == None)
         # Ahora filtro los del cliente y clasifico:
         resultados = {}
         for r in _resultados:

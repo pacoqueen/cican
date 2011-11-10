@@ -2080,6 +2080,11 @@ class Oferta(SQLObject, PRPCTOO):
     def _init(self, *args, **kw):
         starter(self, *args, **kw)
 
+    def get_info(self):
+        return "Oferta %s para %s (%s)" % (self.numoferta, 
+                        self.obra.nombre, 
+                        self.obra.cliente and self.obra.cliente.nombre or "", )
+
 
 class Informe(SQLObject, PRPCTOO):
     resultados = MultipleJoin("Resultado")
