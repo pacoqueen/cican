@@ -38,14 +38,21 @@ Created on 15/05/2010
 ## que ha creado, modificado o accedido a un objeto de pclases y la hora.
 ##########
 
-
-DEBUG = True   # Se puede activar desde ipython después de importar con 
-                # pclases.DEBUG = True
-DEBUG = False
-VERBOSE = False
-#VERBOSE = True  # Activar para mostrar por pantalla progreso al cargar clases.
+from configuracion import ConfigConexion
+config = ConfigConexion()
 
 import sys
+try:
+    DEBUG = config.DEBUG
+    VERBOSE = config.VERBOSE
+except AttributeError:
+    DEBUG = True   # Se puede activar desde ipython después de importar con 
+                    # pclases.DEBUG = True
+    DEBUG = False  
+    VERBOSE = False
+    #VERBOSE = True     # Activar para mostrar por pantalla progreso al 
+                        # cargar clases (entre otra morralla).
+
 if DEBUG or VERBOSE:
     print >> sys.stderr, "IMPORTANDO PCLASES"
 
@@ -53,7 +60,6 @@ import os
 from sqlobject import * 
 import threading, datetime
 from select import select
-from configuracion import ConfigConexion
 import notificacion
 try:
     import utils
@@ -73,8 +79,6 @@ except ImportError:
     import utils.ui
     import utils.numero
 
-
-config = ConfigConexion()
 
 # HACK: No reconoce el puerto en el URI y lo toma como parte del host. Lo 
 # añado detrás y colará en el dsn cuando lo parsee. 

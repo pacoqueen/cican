@@ -41,7 +41,7 @@ import utils
 from framework.configuracion import ConfigConexion
 from multi_open import mailto, open as mopen
 
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 __version_info__ = tuple(
     [int(num) for num in __version__.split()[0].split('.')] + 
     [txt.replace("(", "").replace(")", "") for txt in __version__.split()[1:]]
@@ -496,6 +496,8 @@ class Menu:
         """
         DEPRECATED
         """
+        # No puede mandar más parámetros como la configuración, PUID y 
+        # demás ventajas que sí tiene el otro lanzador.
         exec "import %s" % archivo
         v = eval('%s.%s' % (archivo, clase))
         v(usuario = self.get_usuario())
@@ -530,11 +532,24 @@ class Menu:
         # No se ejecuta. Necesita ponerse delante el nombre del programa que 
         # abre el archivo o usar "start" para que lo haga con el 
         # predeterminado. Otra opción sería usar el multi-open. Investigaré.
+        bin_params = [ruta]
         if usuario:
             idusuario = usuario.id
-            Popen([ruta,  "--usuario=%s" % idusuario])
-        else:
-            Popen(ruta)
+            bin_params.append("--usuario=%s" % idusuario)
+        config = ConfigConexion()
+        fconfig = config.get_file()
+        if fconfig:
+            bin_params.append("--config=%s" % fconfig)
+            fconfig_original = replace_fconfig(fconfig)
+        Popen(bin_params)
+        if fconfig:
+            # TODO: FIXME: No restaura el contenido original. ¿Tal vez lo 
+            # hago demasiado rápido? ¿Debería sincronizarme con señales? ¿Y 
+            # qué pasa con las máquinas windows donde ni el fork ni las 
+            # señales funcionan en condiciones? Y si lo hago nada más lanzar 
+            # el menú y restauro al salir, ¿qué pasa si se me cuelga y tengo 
+            # que cerrar a capón? Me quedo sin el original. Merde.
+            restore_fconfig(fconfig_original)
 
     def enviar_correo_error_ventana(self):
         print _("Se ha detectado un error")
@@ -843,6 +858,7 @@ def main():
         if fconfig:
             config = ConfigConexion()
             config.set_file(fconfig)
+            print "Usando configuración de {}".format(fconfig)
         # Lo hago así porque en todos sitios se llama al constructor sin 
         # parámetros, y quiero instanciar al singleton por primera vez aquí. 
         # Después pongo la configuración correcta en el archivo y en sucesivas 
@@ -868,6 +884,44 @@ def main():
                         % (errores), 
                       m.get_usuario())
 
+def replace_fconfig(nuevo):
+    """
+    Cambia físicamente el fichero de configuración por defecto 
+    (framework/ginn.conf) por el de la ruta recibida.
+    El original lo guarda en una copia temporal y devuelve el nombre de la 
+    misma.
+    """
+    import tempfile, shutil
+    dirframework = os.path.abspath(os.path.join(os.path.dirname(__file__), 
+                                              "..", "framework"))
+    original = os.path.join(dirframework, "ginn.conf")
+    fd, pathtemp = tempfile.mkstemp()
+    #shutil.copy(original, pathtemp)
+    o = open(original)
+    t = open(pathtemp, "w")
+    t.write(o.read())
+    o.close()
+    t.close()
+    #shutil.copy(nuevo, original)
+    o = open(original, "w")
+    n = open(nuevo)
+    o.write(n.read())
+    o.close()
+    n.close()
+    return pathtemp
+
+def restore_fconfig(original):
+    import tempfile, shutil
+    dirframework = os.path.abspath(os.path.join(os.path.dirname(__file__), 
+                                              "..", "framework"))
+    bastardo = os.path.join(dirframework, "ginn.conf")
+    #shutil.copy(original, bastardo)
+    o = open(original, "w")
+    b = open(bastardo)
+    o.write(b.read())
+    o.close()
+    b.close()
+    
 
 if __name__ == '__main__':
     # Import Psyco if available

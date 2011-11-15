@@ -32,8 +32,6 @@ class Singleton(type):
     """
     Patrón Singleton para evitar que una misma instancia del programa trabaje 
     con varias configuraciones:
-    
-    # PyUML: Do not remove this line! # XMI_ID:_XVvIwO5DEd-QvZvwvxUy6Q
     """
     def __init__(self, *args):
         type.__init__(self, *args)
@@ -47,8 +45,6 @@ class ConfigConexion:
     """
     Clase que recoge los parámetros de configuración
     a partir de un archivo.
-    
-    # PyUML: Do not remove this line! # XMI_ID:_XVxlAO5DEd-QvZvwvxUy6Q
     """
     __metaclass__ = Singleton
 
@@ -91,9 +87,19 @@ class ConfigConexion:
 
     def set_file(self, fileconf):
         """
-        Cambia el fichero de configuración y la configuración en sí por el recibido.
+        Cambia el fichero de configuración y la configuración en sí por el 
+        recibido.
         """
         self.__set_conf(fileconf)
+
+    def get_file(self):
+        """
+        Devuelve la ruta del fichero que sirvió como base para la 
+        configuración o None si todas las configuraciones son por defecto, no 
+        se especificó el ficherod de configuración, es erróneo o la ruta 
+        es incorrecta.
+        """
+        return self.__fileconf.name
 
     def __parse(self):
         conf = {}

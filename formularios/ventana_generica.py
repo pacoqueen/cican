@@ -582,7 +582,9 @@ class VentanaGenerica(Ventana):
         # 0.- ¿Qué estamos buscando, sentrañas mías?
         a_buscar = utils.ui.dialogo_entrada(
                     titulo = _("BUSCAR %s" % self.clase.__name__.upper()), 
-                    texto = _("Introduzca el texto a buscar:"), 
+                    texto = _("Introduzca el texto a buscar o deje el\n"
+                              "campo de búsqueda en blanco para ver \n"
+                              "todos los resultados:"), 
                     padre = self.wids['ventana'])
         if a_buscar != None:
             # 1.- Uso el propio buscador Seeker aquí:
