@@ -858,7 +858,7 @@ def main():
         if fconfig:
             config = ConfigConexion()
             config.set_file(fconfig)
-            print "Usando configuración de {}".format(fconfig)
+            print "Usando configuración de {0}".format(fconfig)
         # Lo hago así porque en todos sitios se llama al constructor sin 
         # parámetros, y quiero instanciar al singleton por primera vez aquí. 
         # Después pongo la configuración correcta en el archivo y en sucesivas 
