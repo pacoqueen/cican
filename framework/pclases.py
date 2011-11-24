@@ -703,6 +703,17 @@ class Empleado(SQLObject, PRPCTOO):
             res += " (" + self.dni + ")"
         return res
 
+    def get_peticiones(self, dia):
+        """
+        Devuelve las peticiones asignadas al laborante en el día indicado.
+        Las ordena por hora.
+        """
+        res = Peticion.select(AND(Peticion.q.empleadoID == self.id, 
+                                  Peticion.q.fechaRecogida == dia), 
+                              orderBy = "horaRecogida")
+        res = SQLtuple(res)
+        return res
+
     @staticmethod
     def buscar_laborantes():
         """

@@ -113,7 +113,6 @@ class Linea(Flowable):
         canvas.line(self.desde[0], self.desde[1],
                     self.hasta[0], self.hasta[1])
 
-
 def sanitize(d):
     """
     Sustituye todo lo que no sea texto:
@@ -228,7 +227,6 @@ def dibujar_datos_empresa(canvas, datos_de_la_empresa):
                                             PAGE_WIDTH - 3*cm,
                                             linea - (i*0.55*cm),
                                             escribe(empresa[i]))
-
 
 def build_tabla_cabecera(canvas, datos_factura, y1):
     # Cabecera.

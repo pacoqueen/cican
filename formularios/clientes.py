@@ -76,6 +76,8 @@ class Clientes(VentanaGenerica):
         Busca todos los resultados de laboratorio no facturados, los agrupa 
         por mes, crea una factura por cada uno de ellos y obra y las "imprime".
         """
+        # TODO: PORASQUI: No lo está haciendo bien. Después del cambio para 
+        # poder facturar por informes, se hacen bien las facturas.
         # Informes no facturados:
         informes = pclases.Informe.select(
             pclases.Informe.q.lineaDeVentaID == None)

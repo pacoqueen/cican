@@ -180,6 +180,7 @@
             <child>
               <object class="GtkButton" id="b_actualizar">
                 <property name="label">gtk-refresh</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -196,6 +197,7 @@
             <child>
               <object class="GtkButton" id="b_asignar">
                 <property name="label" translatable="yes">Asi_gnar</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -212,6 +214,8 @@
             <child>
               <object class="GtkButton" id="b_imprimir">
                 <property name="label">gtk-print</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
@@ -226,6 +230,7 @@
             <child>
               <object class="GtkButton" id="b_exportar">
                 <property name="label">gtk-save-as</property>
+                <property name="use_action_appearance">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
@@ -240,6 +245,7 @@
             <child>
               <object class="GtkButton" id="b_salir">
                 <property name="label">gtk-quit</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>

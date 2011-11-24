@@ -194,6 +194,38 @@ class PeticionesSinAsignar(VentanaConsulta):
         p.empleado = laborante
         p.sync()
 
+    def imprimir(self, boton):
+        """
+
+        Imprime una hoja de ruta por cada laborante. Si se ha seleccionado 
+        alguno, entonces solo imprime su hoja de ruta.
+        """
+        model, iter = self.wids['tv_laborantes'].get_selection().get_selected()
+        if not iter:    # Imprimir para todos:
+            laborantes = []
+            for fila in model:
+                puid = fila[-1]
+                laborante = pclases.getObjetoPUID(puid)
+                laborantes.append(laborante)
+        else:
+            puid = model[iter][-1]
+            laborante = pclases.getObjetoPUID(puid)
+            laborantes = [laborante]
+        dia = self.get_fecha_seleccionada()
+        for laborante in laborantes:
+            abrir_hoja_de_ruta(laborante, dia)
+
+
+def abrir_hoja_de_ruta(laborante, dia):
+    """
+    Genera y abre un PDF con la hoja de ruta del laborante para el día 
+    recibido.
+    """
+    from reports import hoja_de_ruta
+    from utils.informes import abrir_pdf 
+    peticiones = laborante.get_peticiones(dia)
+    pdf_hoja_ruta = hoja_de_ruta.hoja_ruta(laborante, peticiones)
+    abrir_pdf(pdf_hoja_ruta)
 
 def main():
     from formularios.options_ventana import parse_options
