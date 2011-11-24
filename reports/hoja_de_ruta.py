@@ -37,7 +37,8 @@ def build_datos_peticion(peticion):
         peticion.direccion 
             and " - " + peticion.direccion.get_direccion_completa()
             or "")
-    p = Paragraph("{0:>6}: {1:s}".format(hora, datos_recogida), estilos["Definition"])
+    p = Paragraph("{0:>6}: {1:s}".format(hora, datos_recogida), 
+                  estilos["Definition"])
     parrafos.append(p)
     ensayos = [] 
     for e in peticion.ensayos:
