@@ -532,7 +532,10 @@ class Menu:
         # No se ejecuta. Necesita ponerse delante el nombre del programa que 
         # abre el archivo o usar "start" para que lo haga con el 
         # predeterminado. Otra opción sería usar el multi-open. Investigaré.
-        bin_params = [ruta]
+        if os.name == "nt":
+            bin_params = ["start {0}".format(ruta)]
+        else:
+            bin_params = [ruta]
         if usuario:
             idusuario = usuario.id
             bin_params.append("--usuario=%s" % idusuario)
