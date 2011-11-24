@@ -103,6 +103,8 @@ def hoja_ruta(laborante, peticiones, basefilename = "hoja_ruta"):
     el nombre del laborante y las peticiones en el orden en que estén 
     en la lista.
     """
+    if basefilename:
+        basefilename += "_"
     basefilename += "".join([i[0].lower() 
                              for i in laborante.get_nombre_completo().split()])
     nomarchivo = gettempfilename(basefilename)
