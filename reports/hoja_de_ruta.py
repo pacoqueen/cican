@@ -41,7 +41,10 @@ def build_datos_peticion(peticion):
     parrafos.append(p)
     ensayos = [] 
     for e in peticion.ensayos:
-        p = Paragraph(e.get_info(), estilos["Bullet"])
+        txt_ensayo = e.get_info()
+        if e.numeroEnsayos >= 2:
+            txt_ensayo += "(x{0})".format(e.numeroEnsayos)
+        p = Paragraph(txt_ensayo, estilos["Bullet"])
         ensayos.append(p)
     parrafos.append(ensayos)
     return parrafos
