@@ -544,7 +544,8 @@ class Menu:
         fconfig = config.get_file()
         if fconfig:
             bin_params.append("--config=%s" % fconfig)
-            fconfig_original = replace_fconfig(fconfig)
+            #fconfig_original = replace_fconfig(fconfig)   # TODO: FIXME: Ver 
+            # el comentario de dos líneas más abajo.
         Popen(bin_params)
         if fconfig:
             # TODO: FIXME: No restaura el contenido original. ¿Tal vez lo 
@@ -553,7 +554,8 @@ class Menu:
             # señales funcionan en condiciones? Y si lo hago nada más lanzar 
             # el menú y restauro al salir, ¿qué pasa si se me cuelga y tengo 
             # que cerrar a capón? Me quedo sin el original. Merde.
-            restore_fconfig(fconfig_original)
+            #restore_fconfig(fconfig_original)
+            pass
 
     def enviar_correo_error_ventana(self):
         print _("Se ha detectado un error")
