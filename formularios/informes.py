@@ -69,10 +69,15 @@ class VentanaInformes(VentanaGenerica):
         self.wids['totalizador_resultados'].set_property("visible", False)
         self.wids['container_adjuntos'].set_property("visible", False)
         # Widgets no editables de campos calculados:
-        self.add_campo_calculado("get_str_muestras", 
-                                 etiqueta = "Códigos de muestra", 
-                                 nombre = "muestras", 
-                                 campo = "codigo")
+        try:
+            self.add_campo_calculado("get_str_muestras", 
+                                     etiqueta = "Códigos de muestra", 
+                                     nombre = "muestras", 
+                                     campo = "codigo")
+        except AttributeError:  # No hay objeto todavía. Tabla vacía. Es None.
+            print "WARNING: informes.py: El objeto es None. No se mostrarán"\
+                  " campos calculados."
+            pass
         if run:
             gtk.main()
     
