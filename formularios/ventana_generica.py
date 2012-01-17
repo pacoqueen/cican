@@ -760,19 +760,35 @@ class VentanaGenerica(Ventana):
             print "nombre_colID", nombre_colID
             print "yo", yo
         try:
-            #FIXME: Esto es rarísimo. Al añadir un resultado a las líneas 
+            #FIXED: Esto es rarísimo. Al añadir un resultado a las líneas 
             # de venta no permite seleccionar ninguno porque esta consulta de 
             # abajo no devuelve nada.
-            raise AttributeError, "ventana_generica.py -> FIXME"
-            items = clasedest.select(
-                getattr(clasedest.q, nombre_colID) != yo.id, orderBy = "id")
+            #raise AttributeError, "ventana_generica.py -> FIXME"
+            # OJO: Esto va a dejar cambiar los registros relacionados con otro 
+            # objeto para asignarlos a este sin hacer que el usuario vaya al 
+            # otro objeto a desrelacionarlo, avisar antes ni nada.
+            items = clasedest.select(pclases.OR(
+                getattr(clasedest.q, nombre_colID) != yo.id, 
+                getattr(clasedest.q, nombre_colID) == None), 
+                orderBy = "id")
             if pclases.DEBUG:
                 print "1", items.count()
         except AttributeError:  # yo es None.
+            print e
             items = clasedest.select(orderBy = "id")
             if pclases.DEBUG:
                 print "2", items.count()
-        opciones = [(item.id, item.get_info()) for item in items]
+        # opciones = [(item.id, item.get_info()) for item in items]
+        opciones = []
+        for item in items:
+            id_del_otro = getattr(item, nombre_colID)
+            if id_del_otro: # Relacionado con otro objeto.
+                el_otro = type(yo).get(id_del_otro)
+                opcion = (item.id, "{0} ({1})".format(item.get_info(), 
+                                                      el_otro.get_info()))
+            else:
+                opcion = (item.id, item.get_info())
+            opciones.append(opcion)
         if pclases.DEBUG:
             print "len(opciones)", len(opciones)
         if permitir_crear:
