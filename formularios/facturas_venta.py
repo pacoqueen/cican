@@ -156,6 +156,7 @@ class FacturasVenta(VentanaGenerica):
                 # Que lo guarde si quiere. Yo solo lo pongo en ventana.
                 self.escribir_valor(self.clase.sqlmeta.columns['retencion'], 
                                     obra.retencion)
+                self.calcular_totales()
 
     def crear_treeviews(self):
         if not self.wids['tv_muestras'].get_model():
@@ -234,16 +235,17 @@ class FacturasVenta(VentanaGenerica):
         muestras = []
         if self.objeto:
             for ldv in self.objeto.lineasDeVenta:
-                for r in ldv.informes:
-                    model_r.append((r.get_info(), r.puid))
-                    if r.ensayo not in ensayos:
-                        e = r.ensayo
-                        model_e.append((e.get_info(), e.puid))
-                        ensayos.append(e)
-                    if r.muestra not in muestras:
-                        m = r.muestra
-                        model_m.append((m.get_info(), m.puid))
-                        muestras.append(m)
+                for i in ldv.informes:
+                    model_r.append((i.get_info(), i.puid))
+                    for muestra in i.muestras:
+                        if muestra not in muestras:
+                            model_m.append((muestra.get_info(), muestra.puid))
+                            muestras.append(muestra)
+                            for resultado in muestra.resultados:
+                                if resultado.ensayo not in ensayos:
+                                    e = resultado.ensayo
+                                    model_e.append((e.get_info(), e.puid))
+                                    ensayos.append(e)
 
     def nuevo(self, boton):
         """

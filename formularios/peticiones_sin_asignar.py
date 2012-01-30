@@ -62,6 +62,8 @@ class PeticionesSinAsignar(VentanaConsulta):
         self.build_tabla_peticiones_sin_asignar()
         self.build_tabla_peticiones_asignadas()
         self.wids['b_asignar'].connect("clicked", self.asignar)
+        self.wids['calendario'].connect('month-changed', 
+                                        marcar_dias_pendientes) 
         self.actualizar_ventana()
         self.wids['calendario'].connect('day-selected',self.actualizar_ventana)
         self.wids['calendario'].select_month(fecha.month - 1, fecha.year)
@@ -79,13 +81,16 @@ class PeticionesSinAsignar(VentanaConsulta):
         model, paths = sel.get_selected_rows()
         for path in paths:
             puid = model[path][-1]
-            obra = pclases.getObjetoPUID(puid)
-            d = obra.direccion 
+            peticion = pclases.getObjetoPUID(puid)
+            d = peticion.direccion 
+            if not d:
+                d = peticion.obra.direccion
             try:
                 self.mapa.centrar_mapa(d.lat, d.lon, zoom = 12, track = track, 
                                        flag = flag)
-            except AttributeError:
-                pass    # La obra no tiene dirección asignada en su ficha.
+            except AttributeError, e:
+                # print e
+                pass    # La obra/peticion no tiene dirección asignada.
 
     def build_tabla_laborantes(self):
         cols = (("Nombre", "gobject.TYPE_STRING", False, True, True, None), 
@@ -226,6 +231,29 @@ def abrir_hoja_de_ruta(laborante, dia):
     peticiones = laborante.get_peticiones(dia)
     pdf_hoja_ruta = hoja_de_ruta.hoja_ruta(laborante, peticiones)
     abrir_pdf(pdf_hoja_ruta)
+    
+def marcar_dias_pendientes(calendario):
+    """
+    Resalta los días en los que quedan peticiones pendientes de asignar 
+    en el mes activo.
+    """
+    calendario.clear_marks()
+    fecha_actual = calendario.get_date()
+    uno_del_mes = datetime.date(fecha_actual[0], 
+                                fecha_actual[1] + 1, 
+                                1)
+    mes_siguiente = fecha_actual[1] + 2
+    if mes_siguiente > 12:
+        anno = fecha_actual[0] + 1
+        mes_siguiente = mes_siguiente % 12
+    else:
+        anno = fecha_actual[0]
+    uno_del_siguiente = datetime.date(anno, mes_siguiente, 1)
+    for p in pclases.Peticion.select(pclases.AND(
+            pclases.Peticion.q.empleadoID==None, 
+            pclases.Peticion.q.fechaRecogida >= uno_del_mes, 
+            pclases.Peticion.q.fechaRecogida < uno_del_siguiente)):
+        calendario.mark_day(p.fechaRecogida.day)
 
 def main():
     from formularios.options_ventana import parse_options

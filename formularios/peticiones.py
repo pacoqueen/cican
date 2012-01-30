@@ -62,6 +62,13 @@ class Peticiones(VentanaGenerica):
         # Quito totales de ensayos:
         self.usuario = self.get_usuario()
         self.wids['totalizador_ensayos'].set_property("visible", False)
+        # Y añado el botón de traer oferta
+        barra = self.wids['totalizador_ensayos'].parent
+        self.wids['b_traer_oferta'] = gtk.Button("Rescatar oferta")
+        b_traer_oferta = self.wids['b_traer_oferta']
+        barra.pack_start(b_traer_oferta)
+        b_traer_oferta.connect("clicked", self.traer_oferta)
+        b_traer_oferta.show()
         if not self.usuario or self.usuario.nivel == 0:
             self.wids['usuarioID'].set_property("sensitive", True)
         else:
@@ -77,6 +84,25 @@ class Peticiones(VentanaGenerica):
             )))
         if run:
             gtk.main()
+
+    def traer_oferta(self, boton):
+        """
+        Rescata las líneas de oferta de las ofertas hechas a la obra.
+        """
+        try:
+            ofertas = self.objeto.obra.ofertas
+        except AttributeError:
+            utils.ui.dialogo_info(titulo = "SIN OFERTAS", 
+                texto = "La obra no tiene ofertas creadas.", 
+                padre = self.wids['ventana'])
+            return
+        for oferta in ofertas:
+            for ldo in oferta.lineasDeOferta:
+                if not ldo.ensayo.peticiones:
+                    # TODO: ¿Tendría que dejar meter más de una vez el mismo 
+                    # ensayo? ¿O meter ensayos ya pedidos en otro sitio?
+                    self.objeto.addEnsayo(ldo.ensayo)
+        self.actualizar_ventana()
 
     def nuevo(self, boton):
         VentanaGenerica.nuevo(self, boton)

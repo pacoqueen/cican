@@ -324,6 +324,7 @@ class VentanaGenerica(Ventana):
         de devolverlo.
         Lanza una excepción si ocurre algún error de conversión.
         """
+        # TODO: Dejar interpretar fórmulas si la cadena empieza por "=".
         if nombre_widget == None:
             nombre_widget = col.name
         widget = self.wids[nombre_widget]
@@ -494,7 +495,8 @@ class VentanaGenerica(Ventana):
             try:
                 # precision = 6 es por las coordenadas (lat, lon) GPS
                 valor = utils.numero.float2str(valor, precision = 6, 
-                                               autodec = True)
+                                               # autodec = True)
+                                               autodec = 2)
             except Exception, e:
                 if pclases.DEBUG and pclases.VERBOSE:
                     terr = "Excepción %s capturada al convertir «%s» de"\
@@ -685,11 +687,13 @@ class VentanaGenerica(Ventana):
             tv = self.wids[coljoin.joinMethodName]
         except KeyError:
             return  # Este widget no se muestra. No existe en la ventana.
+        model = tv.get_model()
+        if not model:
+            return  # El model ya no existe. Se cerró la ventana antes.
         vpro = VentanaProgreso(padre = self.wids['ventana'])
         txtpro = "Buscando %s..." % coljoin.joinMethodName
         vpro.set_valor(0.0, txtpro)
         vpro.mostrar()
-        model = tv.get_model()
         sqlmetaotherClass = getattr(coljoin.otherClass, "sqlmeta")
         columnas = getattr(sqlmetaotherClass, "columns").keys()
         model.clear()
@@ -766,29 +770,36 @@ class VentanaGenerica(Ventana):
             #raise AttributeError, "ventana_generica.py -> FIXME"
             # OJO: Esto va a dejar cambiar los registros relacionados con otro 
             # objeto para asignarlos a este sin hacer que el usuario vaya al 
-            # otro objeto a desrelacionarlo, avisar antes ni nada.
+            # otro objeto a "desrelacionarlo", avisar antes ni nada.
             items = clasedest.select(pclases.OR(
                 getattr(clasedest.q, nombre_colID) != yo.id, 
                 getattr(clasedest.q, nombre_colID) == None), 
                 orderBy = "id")
             if pclases.DEBUG:
                 print "1", items.count()
-        except AttributeError:  # yo es None.
-            print e
+        except AttributeError, e:  # yo es None.
+            if pclases.DEBUG:
+                print e
             items = clasedest.select(orderBy = "id")
             if pclases.DEBUG:
                 print "2", items.count()
         # opciones = [(item.id, item.get_info()) for item in items]
         opciones = []
         for item in items:
-            id_del_otro = getattr(item, nombre_colID)
+            try:
+                id_del_otro = getattr(item, nombre_colID)
+            except AttributeError:  # Debe ser muchos a muchos.
+                # id_del_otro = yo.id
+                id_del_otro = None
             if id_del_otro: # Relacionado con otro objeto.
                 el_otro = type(yo).get(id_del_otro)
                 opcion = (item.id, "{0} ({1})".format(item.get_info(), 
                                                       el_otro.get_info()))
             else:
                 opcion = (item.id, item.get_info())
-            opciones.append(opcion)
+            # Si es muchos a muchos, tengo que filtrar aquí
+            if item not in getattr(yo, coljoin.joinMethodName):
+                opciones.append(opcion)
         if pclases.DEBUG:
             print "len(opciones)", len(opciones)
         if permitir_crear:
@@ -1303,8 +1314,8 @@ def buscar_widget(col, wids):
     contenedor = widget = None
     nombre_col = col.name
     for nombre_w in wids:
-        nombre_col_widget = extraer_nombre_col(nombre_w, agregar_id = False)
-                                              # agregar_id = "ID" in nombre_col)
+        nombre_col_widget = extraer_nombre_col(nombre_w, #agregar_id = False)
+                                               agregar_id = "ID" in nombre_col)
         #print nombre_col_widget, nombre_w, nombre_col
         if nombre_col_widget == nombre_col:
             widget = wids[nombre_w]

@@ -252,6 +252,7 @@ def abrir_adjuntos_de(boton, func_get_objeto):
         ventana_adjuntos = Adjuntos(objeto)
     else:
         pass    # ¿Debería mostrar un cuadro de diálogo de error o algo?
+    # TODO: ¿Cómo hago para actualizar la ventana padre? Ahora hay que hacerlo manualmente con F5.
 
 if __name__ == "__main__":
     pclases.DEBUG = True

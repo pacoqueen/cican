@@ -75,6 +75,8 @@ def float2str(n, precision = 2, autodec = False, separador_decimales = ","):
     mostrados) por defecto es 2.
     Si autodec es True, autodecrementa el número de decimales para no
     mostrar ceros a la derecha en la parte fraccionaria.
+    UPDATE [20120130]: Ahora autodec admite un número para decrementar solo 
+    hasta esa cantidad de decimales.
     """
     if precision == 0:
         res = str(int(round(n, 0)))
@@ -119,10 +121,17 @@ def float2str(n, precision = 2, autodec = False, separador_decimales = ","):
             except Exception:
                 raise ValueError, "El valor %s no se pudo convertir a cadena." % n
     if autodec:
-        while "," in res and len(res) - res.index(",") > 2 and res[-1] == '0':
+        parte_fraccionaria = lambda n: "," in n and n[n.rfind(',') + 1:] or ""
+        while ("," in res and len(res) - res.index(",") > 2 and res[-1] == '0'
+               and len(parte_fraccionaria(res)) > autodec):
             res = res[:-1]
         if res[-1] == '0' and res[-2] == ",":
             res = res[:-2]
+    #if autodec:
+    #    while "," in res and len(res) - res.index(",") > 2 and res[-1] == '0':
+    #        res = res[:-1]
+    #    if res[-1] == '0' and res[-2] == ",":
+    #        res = res[:-2]
     res = res.replace(",", separador_decimales)
     return res
 

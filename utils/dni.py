@@ -102,6 +102,21 @@ def parse_cif(cif):
             res = res[0]
     except IndexError:
         res = ""
+    if len(cif) == 9 and cif[-1] in letras: 
+        _cif = ""
+        for i in cif:
+            if i in numeros:
+                _cif += i
+        # Se corregirá la letra NIF si hiciese falta
+        if len(_cif) == 8:
+            cif = _cif
+    if len(cif) == 8:
+        es_dni_sin_letra = True
+        for i in cif:
+            es_dni_sin_letra = es_dni_sin_letra and i in numeros
+        if es_dni_sin_letra:
+            letra = calcularNIF(cif)
+        res = cif + letra
     # CWT: CIFs pendientes, después pasa lo que pasa.
     if cif == "PENDIENTE":
         return cif 

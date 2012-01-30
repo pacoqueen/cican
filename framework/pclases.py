@@ -88,6 +88,11 @@ conn = '%s://%s:%s@%s/%s port=%s' % (config.get_tipobd(),
                                      config.get_host(), 
                                      config.get_dbname(), 
                                      config.get_puerto()) 
+conn = '%s://%s:%s@%s/%s' % (config.get_tipobd(), 
+                             config.get_user(), 
+                             config.get_pass(), 
+                             config.get_host(), 
+                             config.get_dbname()) 
 
 sqlhub.processConnection = connectionForURI(conn)
 
@@ -726,8 +731,9 @@ class Empleado(SQLObject, PRPCTOO):
 
 
 class Cliente(SQLObject, PRPCTOO):
+    # FIXME:El IVA no se guarda normalizado(0.xx)¿Problema de ventana_generica?
     obras = MultipleJoin("Obra")
-    pedidosVenta = MultipleJoin("PedidoVenta")
+    # pedidosVenta = MultipleJoin("PedidoVenta")
     # peticiones = MultipleJoin("Peticion")
     contactos = RelatedJoin("Contacto", 
                             intermediateTable = "clientes__contactos")
@@ -741,10 +747,23 @@ class Cliente(SQLObject, PRPCTOO):
         return self.nombre
 
 
+class Proveedor(SQLObject, PRPCTOO):
+    contactos = RelatedJoin("Contacto", 
+                            intermediateTable = "proveedores__contactos")
+    class sqlmeta:
+        fromDatabase = True
+
+    def _init(self, *args, **kw):
+        starter(self, *args, **kw)
+
+    def get_info(self):
+        return self.nombre
+
+
 class Obra(SQLObject, PRPCTOO):
     muestras = MultipleJoin("Muestra")
     peticiones = MultipleJoin("Peticion")
-    pedidosVenta = MultipleJoin("PedidoVenta")
+    # pedidosVenta = MultipleJoin("PedidoVenta")
     facturasVenta = MultipleJoin("FacturaVenta")
     ofertas = MultipleJoin("Oferta")
     class sqlmeta:
@@ -917,6 +936,8 @@ class Ensayo(SQLObject, PRPCTOO):
                              intermediateTable = "peticiones__ensayos")
     empleados = RelatedJoin("Empleado", 
                             intermediateTable = "empleados__ensayos")
+    peticiones = RelatedJoin("Peticion", 
+                             intermediateTable = "peticiones__ensayos")
     lineasDeOferta = MultipleJoin("LineaDeOferta")
     class sqlmeta:
         fromDatabase = True
@@ -1321,7 +1342,7 @@ class CodigoPostal(SQLObject, PRPCTOO):
 
 
 class Direccion(SQLObject, PRPCTOO):
-    pedidosVenta = MultipleJoin("PedidoVenta")
+    # pedidosVenta = MultipleJoin("PedidoVenta")
     clientes = MultipleJoin("Cliente")
     obras = MultipleJoin("Obra")
     empleados = MultipleJoin("Empleado")
@@ -1461,7 +1482,15 @@ class Pais(SQLObject, PRPCTOO):
         return self.pais
 
 
-class PedidoVenta(SQLObject, PRPCTOO):
+# class PedidoVenta(SQLObject, PRPCTOO):
+#     class sqlmeta:
+#         fromDatabase = True
+# 
+#     def _init(self, *args, **kw):
+#         starter(self, *args, **kw)
+
+
+class PedidoCompra(SQLObject, PRPCTOO):
     class sqlmeta:
         fromDatabase = True
 
@@ -1612,6 +1641,9 @@ class Factura:
         """
         try:
             retencion = self.retencion
+            # HACK: A veces no viene como fracción de la unidad
+            if retencion > 1:
+                retencion /= 100.0
         except AttributeError:  # Es factura de compra.
             res = 0.0
         else:
@@ -1680,8 +1712,13 @@ class Factura:
         El criterio es que, como una retención no se paga hasta que el cliente 
         da su satisfacción, la fecha será nula.
         """
+        # HACK: El eterno problema de los porcentajes
+        if self.retencion > 1:
+            retencion = self.retencion / 100.0
+        else:
+            retencion = self.retencion
         vto = Vencimiento.crear_vencimiento(self, modo, None, importe, 
-                        "Retención del {0:.0%}".format(self.retencion))
+                        "Retención del {0:.0%}".format(retencion))
 
     def check_vencimientos(self):
         """
@@ -1780,6 +1817,24 @@ class FacturaVenta(SQLObject, PRPCTOO, Factura):
         return res
 
 
+class FacturaCompra(SQLObject, PRPCTOO, Factura):
+    lineasDeCompra = MultipleJoin("LineaDeCompra")
+    pagos = MultipleJoin("Pago")
+    vencimientosPago = MultipleJoin("VencimientoPago")
+
+    class sqlmeta:
+        fromDatabase = True
+
+    def _init(self, *args, **kw):
+        starter(self, *args, **kw)
+
+    def get_info(self):
+        res = "{0.numfactura} ({1})".format(self, 
+            self.fecha and utils.fecha.str_fecha(self.fecha) 
+                        or _("¡Sin fecha!"))
+        return res
+
+
 class Peticion(SQLObject, PRPCTOO):
     muestras = MultipleJoin("Muestra")
     ensayos = RelatedJoin("Ensayo", 
@@ -1830,6 +1885,8 @@ class TipoDeVia(SQLObject, PRPCTOO):
 class Contacto(SQLObject, PRPCTOO):
     clientes = RelatedJoin("Cliente", 
                            intermediateTable = "clientes__contactos")
+    proveedores = RelatedJoin("Proveedor", 
+                              intermediateTable = "proveedores__contactos")
     albaranesEntrada = MultipleJoin("AlbaranEntrada")   
     class sqlmeta:
         fromDatabase = True
@@ -1943,13 +2000,20 @@ class LineaDeVenta(SQLObject, PRPCTOO, Linea):
         return res
 
 
+class LineaDeCompra(SQLObject, PRPCTOO, Linea):
+    class sqlmeta:
+        fromDatabase = True
+
+    def _init(self, *args, **kw):
+        starter(self, *args, **kw)
+
+
 class Cobranza:
     """
     Superclase para cobros y pagos. La palabreja existe. Lo juro.
     """
     # TODO: Completar conforme vaya haciendo falta.
     pass
-
 
 class Cobro(SQLObject, PRPCTOO, Cobranza):
     class sqlmeta:
@@ -1958,6 +2022,25 @@ class Cobro(SQLObject, PRPCTOO, Cobranza):
     def _init(self, *args, **kw):
         starter(self, *args, **kw)
 
+    def get_info(self):
+        try:
+            return self.modoPago.get_info()
+        except AttributeError:
+            return PRPCTOO.get_info(self)
+
+
+class Pago(SQLObject, PRPCTOO, Cobranza):
+    class sqlmeta:
+        fromDatabase = True
+
+    def _init(self, *args, **kw):
+        starter(self, *args, **kw)
+
+    def get_info(self):
+        try:
+            return self.modoPago.get_info()
+        except AttributeError:
+            return Cobranza.get_info(self)
 
 class Vencimiento:
     """
@@ -1993,8 +2076,7 @@ class VencimientoCobro(SQLObject, PRPCTOO, Vencimiento):
         starter(self, *args, **kw)
 
 
-class DocumentoDePago(SQLObject, PRPCTOO):
-    Cobros = MultipleJoin("Cobro")
+class VencimientoPago(SQLObject, PRPCTOO, Vencimiento):
     class sqlmeta:
         fromDatabase = True
 
@@ -2002,9 +2084,33 @@ class DocumentoDePago(SQLObject, PRPCTOO):
         starter(self, *args, **kw)
 
 
+class DocumentoDePago(SQLObject, PRPCTOO):
+    cobros = MultipleJoin("Cobro")
+    pagos = MultipleJoin("Pago")
+    class sqlmeta:
+        fromDatabase = True
+
+    def _init(self, *args, **kw):
+        starter(self, *args, **kw)
+
+    def get_info(self):
+        if self.pagos:
+            tipo = "Pago"
+        else:
+            tipo = "Cobro"
+        mas_info = []
+        for pago in self.pagos:
+            mas_info.append(pago.get_info()) 
+        for cobro in self.cobros:
+            mas_info.append(cobro.get_info())
+        mas_info = ", ".join(mas_info)
+        return "%s %s: %s" % (tipo, self.numero, mas_info)
+
+
 class FormaDePago(SQLObject, PRPCTOO):
-    Obras = MultipleJoin("Obra")
-    FacturasVenta = MultipleJoin("FacturaVenta")
+    obras = MultipleJoin("Obra")
+    facturasVenta = MultipleJoin("FacturaVenta")
+    facturasCompra = MultipleJoin("FacturaCompra")
     class sqlmeta:
         fromDatabase = True
 
@@ -2016,9 +2122,11 @@ class FormaDePago(SQLObject, PRPCTOO):
 
 
 class ModoPago(SQLObject, PRPCTOO):
-    Cobros = MultipleJoin("Cobro")
-    VencimientosCobro = MultipleJoin("VencimientoCobro")
-    FormasDePago = MultipleJoin("FormaDePago")
+    cobros = MultipleJoin("Cobro")
+    pagos = MultipleJoin("Pago")
+    vencimientosCobro = MultipleJoin("VencimientoCobro")
+    vencimientosPago = MultipleJoin("VencimientoPago")
+    formasDePago = MultipleJoin("FormaDePago")
     class sqlmeta:
         fromDatabase = True
 
@@ -2030,7 +2138,7 @@ class ModoPago(SQLObject, PRPCTOO):
 
 
 class PeriodoPago(SQLObject, PRPCTOO):
-    FormasDePago = MultipleJoin("FormaDePago")
+    formasDePago = MultipleJoin("FormaDePago")
     class sqlmeta:
         fromDatabase = True
 

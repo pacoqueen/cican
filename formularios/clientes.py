@@ -41,6 +41,7 @@ from formularios.graficas import charting
 from formularios.ventana_generica import VentanaGenerica
 import utils.ui
 from utils.informes import abrir_pdf
+from utils import dni as utils_dni
 
 class Clientes(VentanaGenerica): 
     def __init__(self, objeto = None, usuario = None, run = True):
@@ -70,6 +71,21 @@ class Clientes(VentanaGenerica):
         b_facturar.show()
         if run:
             gtk.main()
+
+    def rellenar_widgets(self, *args, **kw):
+        super(Clientes, self).rellenar_widgets(*args, **kw)
+        self.check_dni()
+
+    def check_dni(self):
+        """
+        Comprueba que el DNI es válido o lo corrige si no lo es.
+        """
+        if self.objeto:
+            meta = self.__clase.sqlmeta
+            dni = self.leer_valor(meta.columns["cif"])
+            dni_correcto = utils_dni.parse_cif(dni)
+            self.objeto.cif = dni_correcto
+            self.escribir_valor(meta.columns["cif"], dni_correcto)
 
     def facturar_pendiente(self, boton = None):
         """
@@ -161,6 +177,10 @@ class Clientes(VentanaGenerica):
                     for resultado in resultados[obra][mes][ensayo]:
                         resultado.lineaDeVenta = ldv
                         resultado.syncUpdate()
+                        # Y las muestras, ensayos e informes para que se 
+                        # vean después en la ventana de facturas de venta.
+                        resultado.informe.lineaDeVenta = ldv
+                        resultado.informe.syncUpdate()
                 # Vencimientos:
                 f.crear_vencimientos()
                 # Abro las facturas... si quiere el usuario, claro.

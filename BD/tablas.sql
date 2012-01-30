@@ -154,6 +154,23 @@ CREATE TABLE clientes__contactos(
     contacto_id INT REFERENCES contacto NOT NULL
 );
 
+CREATE TABLE proveedor(
+    id SERIAL PRIMARY KEY, 
+    direccion_id INT REFERENCES direccion DEFAULT NULL, 
+    -- TODO: Después pensaremos en el muchos a muchos para la dirección 
+    -- social, fiscal, correspondencia, etc.
+    cif TEXT DEFAULT '', 
+    nombre TEXT DEFAULT 'Nuevo proveedor', 
+    iva FLOAT DEFAULT 0.18, 
+    dia_de_pago INT DEFAULT NULL    -- 0 si no tiene uno específico. Si no, 
+                                    -- el día del mes en el que paga.
+);
+
+CREATE TABLE proveedores__contactos(
+    proveedor_id INT REFERENCES proveedor NOT NULL, 
+    contacto_id INT REFERENCES contacto NOT NULL
+);
+
 CREATE TABLE modo_pago(
     id SERIAL PRIMARY KEY, 
     nombre TEXT DEFAULT '', -- Transferencia, cheque, recibo, pagaré... 
@@ -316,15 +333,59 @@ CREATE TABLE linea_de_venta(
 -- Pedidos de venta --
 ----------------------
 -- Solicitud de recogida de material, compras, servicios...
-CREATE TABLE pedido_venta(
-    id SERIAL PRIMARY KEY,
-    cliente_id INT REFERENCES cliente DEFAULT NULL,
-    direccion_id INT REFERENCES direccion DEFAULT NULL, -- Dirección de 
-        -- envío. Por si no tiene obra.
-    obra_id INT REFERENCES obra DEFAULT NULL, 
-    fecha DATE DEFAULT CURRENT_DATE,
-    numpedido TEXT DEFAULT ''
+-- XXX: Creo que no me va a hacer falta nunca más teniendo la tabla «oferta».
+-- CREATE TABLE pedido_venta(
+--    id SERIAL PRIMARY KEY,
+--    cliente_id INT REFERENCES cliente DEFAULT NULL,
+--    direccion_id INT REFERENCES direccion DEFAULT NULL, -- Dirección de 
+--        -- envío. Por si no tiene obra.
+--    obra_id INT REFERENCES obra DEFAULT NULL, 
+--    fecha DATE DEFAULT CURRENT_DATE,
+--    numpedido TEXT DEFAULT ''
+--);
+
+CREATE TABLE pedido_compra(
+    id SERIAL PRIMARY KEY, 
+    proveedor_id INT REFERENCES proveedor DEFAULT NULL, 
+    fecha DATE DEFAULT CURRENT_DATE
 );
+
+CREATE TABLE factura_compra(
+    id SERIAL PRIMARY KEY, 
+    forma_de_pago_id INT REFERENCES forma_de_pago DEFAULT NULL, 
+    numfactura TEXT DEFAULT '', 
+    fecha DATE NOT NULL DEFAULT CURRENT_DATE, 
+    observaciones TEXT DEFAULT ''
+);
+
+CREATE TABLE linea_de_compra(
+    id SERIAL PRIMARY KEY, 
+    factura_compra_id INT REFERENCES factura_compra, 
+    concepto TEXT DEFAULT '', 
+    cantidad FLOAT DEFAULT 1.0, 
+    precio FLOAT DEFAULT 0.0, 
+    descuento FLOAT DEFAULT 0.0, 
+    iva FLOAT DEFAULT 0.18 
+);
+
+CREATE TABLE pago(
+    id SERIAL PRIMARY KEY, 
+    factura_compra_id INT REFERENCES factura_compra, 
+    modo_pago_id INT REFERENCES modo_pago DEFAULT NULL, 
+    documento_de_pago_id INT REFERENCES documento_de_pago DEFAULT NULL, 
+    fecha DATE DEFAULT CURRENT_DATE, 
+    importe FLOAT DEFAULT 0.0
+);
+
+CREATE TABLE vencimiento_pago(
+    id SERIAL PRIMARY KEY, 
+    factura_compra_id INT REFERENCES factura_compra, 
+    modo_pago_id INT REFERENCES modo_pago, 
+    fecha DATE DEFAULT CURRENT_DATE, 
+    importe FLOAT DEFAULT 0.0, 
+    observaciones TEXT DEFAULT ''
+);
+
 
 -----------------------
 -- TABLAS AUXILIARES --
@@ -518,7 +579,8 @@ CREATE TABLE documento_de_pago(
     numero TEXT DEFAULT '', 
     fecha_recepcion DATE DEFAULT CURRENT_DATE, 
     fecha_vencimiento DATE DEFAULT CURRENT_DATE, 
-    pendiente BOOLEAN DEFAULT TRUE
+    pendiente BOOLEAN DEFAULT TRUE, 
+    observaciones TEXT DEFAULT ''
 );
 
 CREATE TABLE cobro(
