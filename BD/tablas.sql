@@ -229,6 +229,41 @@ CREATE TABLE material(
     nombre TEXT DEFAULT 'Nuevo material'
 );
 
+CREATE TABLE usuario(
+    id SERIAL PRIMARY KEY,
+    empleado_id INT REFERENCES empleado DEFAULT NULL, 
+    usuario VARCHAR(16) UNIQUE NOT NULL CHECK (usuario <> ''), -- Usuario de
+                                                               -- la aplicación
+    passwd CHAR(32) NOT NULL, -- MD5 de la contraseña
+    nombre TEXT DEFAULT '',   -- Nombre completo del usuario
+    cuenta TEXT DEFAULT '',   -- Cuenta de correo de soporte
+    cpass TEXT DEFAULT '',    -- Contraseña del correo de soporte. TEXTO PLANO.
+    nivel INT DEFAULT 5,      -- 0 es el mayor. 5 es el menor.
+        -- Además de los permisos sobre ventanas, para un par de casos
+        -- especiales se mirará el nivel de privilegios para permitir volver a
+        -- desbloquear partes, editar albaranes antiguos y cosas así...
+    email TEXT DEFAULT '',          -- NEW! 25/10/2006. Dirección de correo
+        -- electrónico del usuario (propia, no soporte).
+    smtpserver TEXT DEFAULT '',     -- NEW! 25/10/2006. Servidor SMTP
+        -- correspondiente a la dirección anterior por donde
+        -- enviar, por ejemplo, albaranes.
+    smtpuser TEXT DEFAULT '',       -- NEW! 25/10/2006. Usuario para
+        -- autenticación en el servidor SMTP (si fuera necesario)
+    smtppassword TEXT DEFAULT '',   -- NEW! 25/10/2006. Contraseña para
+        -- autenticación en el servidor SMTP (si fuera necesario).
+    firma_total BOOLEAN DEFAULT FALSE,      -- NEW! 26/02/2007. Puede firmar
+        -- por cualquiera de los 4 roles en facturas de compra.
+    firma_comercial BOOLEAN DEFAULT FALSE,  -- NEW! 26/02/2007. Puede firmar
+        -- como director comercial.
+    firma_director BOOLEAN DEFAULT FALSE,   -- NEW! 26/02/2007. Puede firmar
+        -- como director general.
+    firma_tecnico BOOLEAN DEFAULT FALSE,    -- NEW! 26/02/2007. Puede firmar
+        -- como director técnico.
+    firma_usuario BOOLEAN DEFAULT FALSE,    -- NEW! 26/02/2007. Puede firmar
+        -- como usuario (confirmar total de factura).
+    observaciones TEXT DEFAULT ''           -- NEW! 26/02/2007. Observaciones.
+);
+
 -----------------------------------------
 -- Solicitudes de recogida de material -- 
 -----------------------------------------
@@ -368,6 +403,15 @@ CREATE TABLE linea_de_compra(
     iva FLOAT DEFAULT 0.18 
 );
 
+CREATE TABLE documento_de_pago(
+    id SERIAL PRIMARY KEY, 
+    numero TEXT DEFAULT '', 
+    fecha_recepcion DATE DEFAULT CURRENT_DATE, 
+    fecha_vencimiento DATE DEFAULT CURRENT_DATE, 
+    pendiente BOOLEAN DEFAULT TRUE, 
+    observaciones TEXT DEFAULT ''
+);
+
 CREATE TABLE pago(
     id SERIAL PRIMARY KEY, 
     factura_compra_id INT REFERENCES factura_compra, 
@@ -390,41 +434,6 @@ CREATE TABLE vencimiento_pago(
 -----------------------
 -- TABLAS AUXILIARES --
 -----------------------
-CREATE TABLE usuario(
-    id SERIAL PRIMARY KEY,
-    empleado_id INT REFERENCES empleado DEFAULT NULL, 
-    usuario VARCHAR(16) UNIQUE NOT NULL CHECK (usuario <> ''), -- Usuario de
-                                                               -- la aplicación
-    passwd CHAR(32) NOT NULL, -- MD5 de la contraseña
-    nombre TEXT DEFAULT '',   -- Nombre completo del usuario
-    cuenta TEXT DEFAULT '',   -- Cuenta de correo de soporte
-    cpass TEXT DEFAULT '',    -- Contraseña del correo de soporte. TEXTO PLANO.
-    nivel INT DEFAULT 5,      -- 0 es el mayor. 5 es el menor.
-        -- Además de los permisos sobre ventanas, para un par de casos
-        -- especiales se mirará el nivel de privilegios para permitir volver a
-        -- desbloquear partes, editar albaranes antiguos y cosas así...
-    email TEXT DEFAULT '',          -- NEW! 25/10/2006. Dirección de correo
-        -- electrónico del usuario (propia, no soporte).
-    smtpserver TEXT DEFAULT '',     -- NEW! 25/10/2006. Servidor SMTP
-        -- correspondiente a la dirección anterior por donde
-        -- enviar, por ejemplo, albaranes.
-    smtpuser TEXT DEFAULT '',       -- NEW! 25/10/2006. Usuario para
-        -- autenticación en el servidor SMTP (si fuera necesario)
-    smtppassword TEXT DEFAULT '',   -- NEW! 25/10/2006. Contraseña para
-        -- autenticación en el servidor SMTP (si fuera necesario).
-    firma_total BOOLEAN DEFAULT FALSE,      -- NEW! 26/02/2007. Puede firmar
-        -- por cualquiera de los 4 roles en facturas de compra.
-    firma_comercial BOOLEAN DEFAULT FALSE,  -- NEW! 26/02/2007. Puede firmar
-        -- como director comercial.
-    firma_director BOOLEAN DEFAULT FALSE,   -- NEW! 26/02/2007. Puede firmar
-        -- como director general.
-    firma_tecnico BOOLEAN DEFAULT FALSE,    -- NEW! 26/02/2007. Puede firmar
-        -- como director técnico.
-    firma_usuario BOOLEAN DEFAULT FALSE,    -- NEW! 26/02/2007. Puede firmar
-        -- como usuario (confirmar total de factura).
-    observaciones TEXT DEFAULT ''           -- NEW! 26/02/2007. Observaciones.
-);
-
 CREATE TABLE modulo(
     id SERIAL PRIMARY KEY,
     nombre TEXT,
@@ -571,15 +580,6 @@ CREATE TABLE vencimiento_cobro(
     modo_pago_id INT REFERENCES modo_pago, 
     fecha DATE DEFAULT CURRENT_DATE, 
     importe FLOAT DEFAULT 0.0, 
-    observaciones TEXT DEFAULT ''
-);
-
-CREATE TABLE documento_de_pago(
-    id SERIAL PRIMARY KEY, 
-    numero TEXT DEFAULT '', 
-    fecha_recepcion DATE DEFAULT CURRENT_DATE, 
-    fecha_vencimiento DATE DEFAULT CURRENT_DATE, 
-    pendiente BOOLEAN DEFAULT TRUE, 
     observaciones TEXT DEFAULT ''
 );
 
