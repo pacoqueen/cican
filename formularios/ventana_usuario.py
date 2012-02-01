@@ -31,10 +31,9 @@
 ## 
 ###################################################################
 ## Changelog:
-## 27 de abril de 2006 -> Inicio.
 ## 
 ###################################################################
-## 
+## TODO: No hay nada hecho. Hay que adaptarlo a CICAN.
 ## 
 ###################################################################
 from ventana import Ventana
@@ -42,11 +41,7 @@ import utils
 import pygtk
 pygtk.require('2.0')
 import sys, os 
-try:
-    import pclases
-except ImportError:
-    sys.path.append(os.path.join('..', 'framework'))
-    import pclases
+from framework import pclases
 import gtk, gtk.glade, time, sqlobject, mx
 import mx.DateTime
 import gobject
@@ -59,6 +54,7 @@ class Usuarios(Ventana):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]
         Ventana.__init__(self, 'ventana_usuario.glade', objeto)
         connections = {'b_salir/clicked': self.salir,
                        'b_actualizar/clicked': self.actualizar_ventana, 

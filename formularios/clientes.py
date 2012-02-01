@@ -50,6 +50,7 @@ class Clientes(VentanaGenerica):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]        
         self.__clase = pclases.Cliente
         self._objetoreciencreado = None
         if objeto and isinstance(objeto, self.__clase):

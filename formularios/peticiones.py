@@ -52,6 +52,7 @@ class Peticiones(VentanaGenerica):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]
         __clase = pclases.Peticion
         VentanaGenerica.__init__(self, objeto = objeto, 
                                  usuario = usuario, 

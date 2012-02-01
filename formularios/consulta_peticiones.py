@@ -46,6 +46,7 @@ class PeticionesSinAsignar(VentanaConsulta):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]        
         __clase = pclases.Peticion
         self.usuario = usuario
         VentanaConsulta.__init__(self, 

@@ -51,6 +51,7 @@ class Contadores(Ventana):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]        
         self.usuario = usuario
         Ventana.__init__(self, 'contadores.glade', objeto)
         connections = {'b_salir/clicked': self.salir,

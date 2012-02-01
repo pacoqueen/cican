@@ -50,7 +50,8 @@ class FacturasVenta(VentanaGenerica):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
-        __clase = pclases.FacturaVenta
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]        
+        self.__clase = __clase = pclases.FacturaVenta
         self.usuario = usuario
         VentanaGenerica.__init__(self, objeto = objeto, 
                                  usuario = self.usuario, 
