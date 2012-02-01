@@ -70,7 +70,7 @@ class Usuarios(Ventana):
         self.inicializar_ventana()
         if self.objeto == None:
             self.ir_a_primero()
-            utils.dialogo_info(titulo = "NO SE PUDO DETERMINAR SU USUARIO",
+            utils.ui.dialogo_info(titulo = "NO SE PUDO DETERMINAR SU USUARIO",
                                texto = "No se pudo determinar su nombre de usuario.\nAsegúrese de haber iniciado sesión correctamente y vuelva a intentarlo.",
                                padre = self.wids['ventana'])
             self.logger.error("ventana_usuario::__init__:No se pudo determinar nombre de usuario.")
@@ -102,7 +102,7 @@ class Usuarios(Ventana):
         Muestra una ventana modal con el mensaje de objeto 
         actualizado.
         """
-        utils.dialogo_info('ACTUALIZAR',
+        utils.ui.dialogo_info('ACTUALIZAR',
                            'El usuario ha sido modificado remotamente.\nDebe actualizar la información mostrada en pantalla.\nPulse el botón «Actualizar»')
         self.wids['b_actualizar'].set_sensitive(True)
 
@@ -126,7 +126,7 @@ class Usuarios(Ventana):
                 ('Leído', 'gobject.TYPE_BOOLEAN', True, True, False, self.cambiar_leido),
                 ('ID', 'gobject.TYPE_INT64', False, False, False, None)
                )
-        utils.preparar_listview(self.wids['tv_mensajes'], cols)
+        utils.ui.preparar_listview(self.wids['tv_mensajes'], cols)
 
     def activar_widgets(self, s):
         """
@@ -160,7 +160,7 @@ class Usuarios(Ventana):
         filas_res = []
         for r in resultados:
             filas_res.append((r.id, r.usuario))
-        idusuario = utils.dialogo_resultado(filas_res,
+        idusuario = utils.ui.dialogo_resultado(filas_res,
                                             titulo = 'Seleccione usuario',
                                             cabeceras = ('ID Interno', 'Nombre de usuario')) 
         if idusuario < 0:
@@ -238,10 +238,9 @@ class Usuarios(Ventana):
                           a.entregado,
                           a.id))
 
-        
     def enviar_mensaje(self, b):
         usuario = self.objeto
-        texto = utils.dialogo_entrada(titulo = 'NUEVO MENSAJE', texto = 'Introduzca mensaje de la alerta:')
+        texto = utils.ui.dialogo_entrada(titulo = 'NUEVO MENSAJE', texto = 'Introduzca mensaje de la alerta:')
         if texto != None:
             usuario.enviar_mensaje(texto)
         self.rellenar_alertas()
@@ -252,12 +251,12 @@ class Usuarios(Ventana):
             aid = model[iter][-1]
             alerta = pclases.Alerta.get(aid)
             if not alerta.entregado:
-                utils.dialogo_info(titulo = "ALERTA PENDIENTE", texto = "La alerta seleccionada aún no ha sido leída por el usuario.\nMárquela como leída si realmente quiere borrarla.")
+                utils.ui.dialogo_info(titulo = "ALERTA PENDIENTE", texto = "La alerta seleccionada aún no ha sido leída por el usuario.\nMárquela como leída si realmente quiere borrarla.")
             else:
                 try:
                     alerta.destroySelf()
                 except:
-                    utils.dialogo_info(titulo = "ERROR", texto = "El mensaje no se pudo borrar", padre = self.wids['ventana'])
+                    utils.ui.dialogo_info(titulo = "ERROR", texto = "El mensaje no se pudo borrar", padre = self.wids['ventana'])
                 self.rellenar_alertas()
     
         
@@ -271,7 +270,7 @@ class Usuarios(Ventana):
             horas, minutos = map(int, hora.split(':'))
             alerta.fechahora = mx.DateTime.DateTimeFrom(day = dia, month = mes, year = anno, hour = horas, minute = minutos)
         except:
-            utils.dialogo_info(titulo = 'HORA INCORRECTA', texto = 'El formato debe ser "dia/mes/año horas:minutos"')
+            utils.ui.dialogo_info(titulo = 'HORA INCORRECTA', texto = 'El formato debe ser "dia/mes/año horas:minutos"')
         self.rellenar_alertas()
         
     def cambiar_mensaje(self, cell, path, text):
@@ -308,11 +307,11 @@ class Usuarios(Ventana):
         caracteres.                                                 
         """
         try:
-            nomusuario = utils.dialogo_entrada(txt, 
+            nomusuario = utils.ui.dialogo_entrada(txt, 
                                                'NOMBRE DE USUARIO', '')
         except:
             # Seguramente haya introducido un nombre repetido o en blanco (valor por defecto del diálogo).
-            utils.dialogo_info()
+            utils.ui.dialogo_info("ERROR DESCONOCIDO")  # FIXME ¿Error desconocido? ¿Sabe esto Jacob Nielsen?
             return
         if nomusuario == None: return
         if usuario != None: usuario.notificador.desactivar()
@@ -321,7 +320,7 @@ class Usuarios(Ventana):
                                         nombre = '',
                                         cuenta = '',
                                         cpass = '')
-        utils.dialogo_info('USUARIO CREADO', 'El usuario %s ha sido creado.\nNo olvide completar el resto de información relativa al mismo.' % usuario.usuario)
+        utils.ui.dialogo_info('USUARIO CREADO', 'El usuario %s ha sido creado.\nNo olvide completar el resto de información relativa al mismo.' % usuario.usuario)
         usuario.notificador.activar(self.aviso_actualizacion)
         self.objeto = usuario
         self.actualizar_ventana()
@@ -334,7 +333,7 @@ class Usuarios(Ventana):
         la ventana de resultados.
         """
         usuario = self.objeto
-        a_buscar = utils.dialogo_entrada("Introduzca nombre de usuario o nombre real:") 
+        a_buscar = utils.ui.dialogo_entrada("Introduzca nombre de usuario o nombre real:") 
         if a_buscar != None:
             resultados = pclases.Usuario.select(sqlobject.OR(pclases.Usuario.q.usuario.contains(a_buscar),
                                                              pclases.Usuario.q.nombre.contains(a_buscar)))
@@ -346,7 +345,7 @@ class Usuarios(Ventana):
                 resultados = [pclases.Uduario.get(idusuario)]
             elif resultados.count() < 1:
                 ## Sin resultados de búsqueda
-                utils.dialogo_info('SIN RESULTADOS', 'La búsqueda no produjo resultados.\nPruebe a cambiar el texto buscado o déjelo en blanco para ver una lista completa.\n(Atención: Ver la lista completa puede resultar lento si el número de elementos es muy alto)')
+                utils.ui.dialogo_info('SIN RESULTADOS', 'La búsqueda no produjo resultados.\nPruebe a cambiar el texto buscado o déjelo en blanco para ver una lista completa.\n(Atención: Ver la lista completa puede resultar lento si el número de elementos es muy alto)')
                 return
             ## Un único resultado
             # Primero anulo la función de actualización
@@ -394,25 +393,24 @@ class Usuarios(Ventana):
         self.wids['b_guardar'].set_sensitive(False)
 
     def nueva_contrasenna(self, b):
-        passw = utils.dialogo_entrada(titulo = 'NUEVA CONTRASEÑA',
+        passw = utils.ui.dialogo_entrada(titulo = 'NUEVA CONTRASEÑA',
                                       texto = 'Introduzca la nueva contraseña')
         try:
             self.objeto.notificador.desactivar() 
             self.objeto.passwd = md5.new(passw).hexdigest()
-            utils.dialogo_info(titulo = 'CONTRASEÑA CAMBIADA', texto = 'Contraseña cambiada con éxito.')
+            utils.ui.dialogo_info(titulo = 'CONTRASEÑA CAMBIADA', texto = 'Contraseña cambiada con éxito.')
             self.objeto.sync()
             self.objeto.notificador.activar(self.aviso_actualizacion)       # Activo la notificación
             self.actualizar_ventana()
         except:
-            utils.dialogo_info(titulo = 'ERROR', texto = 'Contraseña no cambiada. Contacte con el administrador de la base de datos para que la restrablezca manualmente.', padre = self.wids['ventana'])
-
+            utils.ui.dialogo_info(titulo = 'ERROR', texto = 'Contraseña no cambiada. Contacte con el administrador de la base de datos para que la restrablezca manualmente.', padre = self.wids['ventana'])
 
     def borrar_usuario(self, boton):
         """
         Elimina el albarán de la BD y anula la relación entre
         él y sus LDVs.
         """
-        if not utils.dialogo('Se intentará eliminar el usuario actual y todos sus permisos y datos relacionados.\n¿Está seguro?', 'BORRAR USUARIO'): return
+        if not utils.ui.dialogo('Se intentará eliminar el usuario actual y todos sus permisos y datos relacionados.\n¿Está seguro?', 'BORRAR USUARIO'): return
         usuario = self.objeto
         usuario.notificador.desactivar()
         for permiso in usuario.permisos:
@@ -424,11 +422,14 @@ class Usuarios(Ventana):
         try:
             usuario.destroySelf()
         except:
-            utils.dialogo_info('ERROR', 'No se pudo eliminar.\nIntente borrar primero sus mensajes pendientes, etc.', padre = self.wids['ventana'])
+            utils.ui.dialogo_info('ERROR', 'No se pudo eliminar.\nIntente borrar primero sus mensajes pendientes, etc.', padre = self.wids['ventana'])
             return
         self.ir_a_primero()
 
 
 if __name__=='__main__':
-    u = Usuarios()
+    try:
+        u = Usuarios(pclases.Usuario.selectBy(usuario = sys.argv[1])[0])
+    except IndexError:
+        u = Usuarios()
 
