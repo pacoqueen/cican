@@ -831,14 +831,15 @@ class Ventana(object):
             ventanas = pclases.Ventana.selectBy(fichero = VENTANA)
             if ventanas.count() == 1:   # Siempre debería ser 1.
                 permiso = self.__usuario.get_permisos(ventanas[0])
+                # print permiso
                 if permiso == None:
                     permiso = MetaPermiso()
                 if permiso.escritura:
                     if self.__usuario.nivel <= 1:
-                        # print "Activo widgets para usuario con nivel de privilegios <= 1."
+                        # print "Activo widgets para usuario con nivel de privilegios <= 1."  # XXX
                         self.activar_widgets(True, chequear_permisos = False)
                     else:
-                        # print "Activo widgets porque permiso de escritura y objeto no bloqueado o recién creado."
+                        # print "Activo widgets porque permiso de escritura y objeto no bloqueado o recién creado."   # XXX
                         if hasattr(self.objeto, "bloqueado"):
                             condicion_bloqueo = self.objeto != None and (not self.objeto.bloqueado 
                                                                           or self._objetoreciencreado == self.objeto)
@@ -848,10 +849,10 @@ class Ventana(object):
                                              chequear_permisos = False)
                 else:   # No tiene permiso de escritura. Sólo puede modificar el objeto que acaba de crear.
                     if hasattr(self, "_objetoreciencreado") and self._objetoreciencreado == self.objeto: 
-                        # print "Activo widgets porque objeto recién creado aunque no tiene permiso de escritura."
+                        # print "Activo widgets porque objeto recién creado aunque no tiene permiso de escritura."    # XXX
                         self.activar_widgets(True, chequear_permisos = False)
                     else:
-                        # print "Desactivo widgets porque no permiso de escritura."
+                        # print "Desactivo widgets porque no permiso de escritura."   # XXX
                         self.activar_widgets(False, chequear_permisos = False)
                 self.wids['b_buscar'].set_sensitive(permiso.lectura)
                 self.wids['b_nuevo'].set_sensitive(permiso.nuevo)

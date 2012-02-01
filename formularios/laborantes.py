@@ -46,6 +46,7 @@ class VentanaLaborantes(VentanaGenerica):
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
+        self.nombre_fichero_ventana = os.path.split(__file__)[-1]
         self._objetoreciencreado = None
         self.__clase = pclases.Empleado
         meta = self.__clase.sqlmeta

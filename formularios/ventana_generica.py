@@ -220,14 +220,14 @@ class VentanaGenerica(Ventana):
         self.wids['ventana'].set_title(self.clase.__name__)
         self.refocus_enter()
 
-    def activar_widgets(self, activo = True):
+    def activar_widgets(self, activo = True, chequear_permisos = True):
         """
         Activa o desactiva los widgets de la ventana que 
         dependan del objeto mostrado (generalmente todos 
         excepto el botón de nuevo, salir y buscar).
         """
-        if self.__usuario and self.__usuario.nivel >= 2:
-            activo = False
+        # if self.__usuario and self.__usuario.nivel >= 2:  # WTF?
+        #     activo = False
         if self.objeto == None:
             activo = False
         excepciones = ["b_nuevo", "b_salir", "b_buscar"] #, "ventana"] # La 
@@ -257,6 +257,9 @@ class VentanaGenerica(Ventana):
                 and not w.startswith("b_save_") # Botones guardar local.
                 and w not in excepciones):
                 self.wids[w].set_sensitive(activo)
+        if self.nombre_fichero_ventana and chequear_permisos:
+            self.check_permisos(
+                nombre_fichero_ventana = self.nombre_fichero_ventana)
 
     def es_diferente(self):
         """
