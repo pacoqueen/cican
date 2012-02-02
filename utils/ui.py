@@ -312,7 +312,11 @@ def insertar_boton_copiar_al_portapapeles(dialog, texto):
     try:
         a = dialog.get_action_area()
     except AttributeError:
-        a = dialog.child.children()[1]
+        try:
+            a = [i for i in dialog.child.children() 
+                 if isinstance(i, gtk.ButtonBox)][0]
+        except IndexError:
+            return
     a.pack_start(boton_copiar)
     a.reorder_child(boton_copiar, 0)
     boton_copiar.connect("clicked", 
