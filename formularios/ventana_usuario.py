@@ -42,8 +42,7 @@ import pygtk
 pygtk.require('2.0')
 import sys, os 
 from framework import pclases
-import gtk, gtk.glade, time, mx
-import mx.DateTime
+import gtk, gtk.glade, time, datetime 
 import gobject
 import md5
 
@@ -275,7 +274,7 @@ class Usuarios(Ventana):
             fecha, hora = text.split(' ')
             dia, mes, anno = map(int, fecha.split('/'))
             horas, minutos = map(int, hora.split(':'))
-            alerta.fechahora = mx.DateTime.DateTimeFrom(day = dia, month = mes, year = anno, hour = horas, minute = minutos)
+            alerta.fechahora = datetime.datetime(day = dia, month = mes, year = anno, hour = horas, minute = minutos)
         except:
             utils.ui.dialogo_info(titulo = 'HORA INCORRECTA', texto = 'El formato debe ser "dia/mes/año horas:minutos"')
         self.rellenar_alertas()
