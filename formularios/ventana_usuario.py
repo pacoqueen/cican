@@ -71,9 +71,12 @@ class Usuarios(Ventana):
         if self.objeto == None:
             self.ir_a_primero()
             utils.ui.dialogo_info(titulo = "NO SE PUDO DETERMINAR SU USUARIO",
-                               texto = "No se pudo determinar su nombre de usuario.\nAsegúrese de haber iniciado sesión correctamente y vuelva a intentarlo.",
-                               padre = self.wids['ventana'])
-            self.logger.error("ventana_usuario::__init__:No se pudo determinar nombre de usuario.")
+                texto = "No se pudo determinar su nombre de usuario.\n"
+                        "Asegúrese de haber iniciado sesión correctamente y "
+                        "vuelva a intentarlo.",
+                padre = self.wids['ventana'])
+            self.logger.error("ventana_usuario.py::__init__:"
+                              "No se pudo determinar nombre de usuario.")
         else:
             self.ir_a(objeto)
             self.wids['ventana'].maximize()
