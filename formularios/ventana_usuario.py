@@ -42,20 +42,24 @@ import pygtk
 pygtk.require('2.0')
 import sys, os 
 from framework import pclases
-import gtk, gtk.glade, time, sqlobject, mx
+import gtk, gtk.glade, time, mx
 import mx.DateTime
 import gobject
 import md5
 
 class Usuarios(Ventana):
-    def __init__(self, objeto = None, usuario = None):
+    def __init__(self, objeto = None, usuario = None, run = True):
         """
         Constructor. objeto puede ser un objeto de pclases con el que
         comenzar la ventana (en lugar del primero de la tabla, que es
         el que se muestra por defecto).
         """
         self.nombre_fichero_ventana = os.path.split(__file__)[-1]
-        Ventana.__init__(self, 'ventana_usuario.glade', objeto)
+        __clase = pclases.Usuario
+        if not isinstance(usuario, pclases.Usuario):
+            usuario = pclases.Usuario.get(usuario)
+        self.objeto = self.usuario = usuario
+        Ventana.__init__(self, 'ventana_usuario.glade', self.objeto)
         connections = {'b_salir/clicked': self.salir,
                        'b_actualizar/clicked': self.actualizar_ventana, 
                        'b_guardar/clicked': self.guardar, 
@@ -78,7 +82,7 @@ class Usuarios(Ventana):
             self.logger.error("ventana_usuario.py::__init__:"
                               "No se pudo determinar nombre de usuario.")
         else:
-            self.ir_a(objeto)
+            self.ir_a(self.objeto)
             self.wids['ventana'].maximize()
             gtk.main()
 
@@ -338,7 +342,7 @@ class Usuarios(Ventana):
         usuario = self.objeto
         a_buscar = utils.ui.dialogo_entrada("Introduzca nombre de usuario o nombre real:") 
         if a_buscar != None:
-            resultados = pclases.Usuario.select(sqlobject.OR(pclases.Usuario.q.usuario.contains(a_buscar),
+            resultados = pclases.Usuario.select(pclases.OR(pclases.Usuario.q.usuario.contains(a_buscar),
                                                              pclases.Usuario.q.nombre.contains(a_buscar)))
             if resultados.count() > 1:
                 ## Refinar los resultados
@@ -429,10 +433,11 @@ class Usuarios(Ventana):
             return
         self.ir_a_primero()
 
+def main():
+    from formularios.options_ventana import parse_options
+    params, opt_params = parse_options()
+    u = Usuarios(*params, **opt_params)
 
 if __name__=='__main__':
-    try:
-        u = Usuarios(pclases.Usuario.selectBy(usuario = sys.argv[1])[0])
-    except IndexError:
-        u = Usuarios()
+    main()
 

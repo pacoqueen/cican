@@ -453,6 +453,12 @@ class Menu:
                                         self.logger, 
                                         self.__usuario.usuario)
             self.abrir_pruebas_coherencia()
+        elif archivo == "ventana_usuario":
+            utils.ui.escribir_barra_estado(self.statusbar, 
+                                        _("Mis datos de usuario"), 
+                                        self.logger, 
+                                        self.__usuario.usuario)
+            self.abrir_ventana_modulo_python(archivo, clase)
         else:
             utils.ui.escribir_barra_estado(self.statusbar, 
                                         _("Cargar: %s.py") % archivo, 
