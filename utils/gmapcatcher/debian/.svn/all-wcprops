@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/1047/trunk/debian
+END
+control
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/924/trunk/debian/control
+END
+pyversions
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/910/trunk/debian/pyversions
+END
+compat
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/889/trunk/debian/compat
+END
+watch
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/921/trunk/debian/watch
+END
+changelog
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/995/trunk/debian/changelog
+END
+lucid.diff
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/1047/trunk/debian/lucid.diff
+END
+maverick.diff
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/1047/trunk/debian/maverick.diff
+END
+docs
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/889/trunk/debian/docs
+END
+copyright
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/911/trunk/debian/copyright
+END
+rules
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/892/trunk/debian/rules
+END
+legacy.diff
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/996/trunk/debian/legacy.diff
+END
+README.source
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/892/trunk/debian/README.source
+END

@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1138/trunk/gmapcatcher/mapServers
+END
+yandex.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/yandex.py
+END
+informationFreeway.py
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/informationFreeway.py
+END
+openStreetMaps.py
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/openStreetMaps.py
+END
+virtualEarth.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/virtualEarth.py
+END
+googleMapMaker.py
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/googleMapMaker.py
+END
+cloudMade.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/cloudMade.py
+END
+googleMaps.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/1138/trunk/gmapcatcher/mapServers/googleMaps.py
+END
+seznam.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/seznam.py
+END
+yahoo.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1138/trunk/gmapcatcher/mapServers/yahoo.py
+END
+openCycleMap.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/1070/trunk/gmapcatcher/mapServers/openCycleMap.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/897/trunk/gmapcatcher/mapServers/__init__.py
+END

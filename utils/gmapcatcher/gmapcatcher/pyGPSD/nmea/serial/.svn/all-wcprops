@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/nmea/serial
+END
+LICENSE.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/LICENSE.txt
+END
+loopback_connection.py
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/loopback_connection.py
+END
+serialutil.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/serialutil.py
+END
+sermsdos.py
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/sermsdos.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/nmea/serial/__init__.py
+END
+serialjava.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/serialjava.py
+END
+win32.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/win32.py
+END
+serialposix.py
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/nmea/serial/serialposix.py
+END
+serialwin32.py
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/serialwin32.py
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/README.txt
+END
+rfc2217.py
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/rfc2217.py
+END
+socket_connection.py
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/socket_connection.py
+END
+serialcli.py
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/nmea/serial/serialcli.py
+END

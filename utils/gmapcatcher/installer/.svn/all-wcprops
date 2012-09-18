@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/1154/trunk/installer
+END
+setup.bat
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/1090/trunk/installer/setup.bat
+END
+setup.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1090/trunk/installer/setup.py
+END
+setup.nsi
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/1154/trunk/installer/setup.nsi
+END
+build_gz.sh
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/1047/trunk/installer/build_gz.sh
+END

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/964/trunk/gmapcatcher/pyGPSD
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/LICENSE
+END
+client_test.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/client_test.py
+END
+gpsd.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/gpsd.py
+END
+helper.py
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/964/trunk/gmapcatcher/pyGPSD/helper.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/__init__.py
+END
+gpsView.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/964/trunk/gmapcatcher/pyGPSD/gpsView.py
+END
+miniterm.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/miniterm.py
+END
+scan.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/912/trunk/gmapcatcher/pyGPSD/scan.py
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/897/trunk/gmapcatcher/pyGPSD/README
+END

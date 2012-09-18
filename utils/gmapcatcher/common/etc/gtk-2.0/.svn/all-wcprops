@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1100/trunk/common/etc/gtk-2.0
+END
+gtk.immodules
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/201/trunk/common/etc/gtk-2.0/gtk.immodules
+END
+gdk-pixbuf.loaders
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/201/trunk/common/etc/gtk-2.0/gdk-pixbuf.loaders
+END
+gtkrc
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/1100/trunk/common/etc/gtk-2.0/gtkrc
+END
+gtkrc.default
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/201/trunk/common/etc/gtk-2.0/gtkrc.default
+END
+im-multipress.conf
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/201/trunk/common/etc/gtk-2.0/im-multipress.conf
+END
